@@ -1,0 +1,97 @@
+#!/usr/bin/env node
+const { readFileSync } = require('fs');
+const yargs = require('yargs/yargs');
+
+const y = yargs(process.argv.slice(2));
+
+let input = '/dev/stdin';
+
+const defaultDepth = 6;
+const defaultMaxArrayLength = 100;
+const defaultMaxStringLength = 10_000;
+
+y.alias('w', 'whole')
+    .command('w', 'Do not collapse nested objects', {
+        alias: 'whole',
+        default: false,
+        conflicts: ['d'],
+    })
+    .nargs('w', 0)
+    .help();
+
+y.alias('d', 'depth')
+    .command('d', 'Set nested object depth', {
+        alias: 'depth',
+        default: defaultDepth,
+        number: true,
+        conflicts: ['w']
+    })
+    .nargs('d', 1)
+    .help();
+
+y.command('color', 'Colored output (true or false)', {
+        default: true,
+        boolean: true
+    })
+    .boolean('color')
+    .help();
+
+
+y.alias('c', 'compact')
+    .command('c', 'Show compact output', {
+        default: false,
+        boolean: true
+    })
+    .nargs('c', 0)
+    .boolean('c')
+    .help();
+
+const argv = y.argv;
+
+if (!!argv._[0]) {
+    input = argv._[0];
+}
+
+function kill(msg, code = 1) {
+	process.stderr.write(msg);
+	process.exit(code);
+}
+
+try {
+    input = readFileSync(input, 'utf-8');
+} catch {
+    kill("can't open file", 1);
+}
+
+let contents;
+try {
+    contents = JSON.parse(input);
+} catch {
+    kill('invalid json', 2);
+}
+
+const color = typeof argv.color === 'boolean' ? argv.color : true;
+const compact = argv.compact;
+const showMax = argv.whole;
+const depth =
+    showMax
+    ? Infinity : (
+        !isNaN(argv.depth) && +argv.depth > 0
+            ? +argv.depth
+            : defaultDepth
+        );
+
+const options = {
+    colors: color,
+    depth: depth,
+    maxArrayLength: defaultMaxArrayLength,
+    maxStringLength: defaultMaxStringLength
+};
+
+// Output looks ugly when "compact" is false
+if (compact)
+    options.compact = true;
+
+console.log(
+    require('util').inspect(contents, options)
+);

@@ -1,0 +1,42 @@
+alias icat='kitty +kitten icat'
+
+UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 OPR/93.0.0.0"
+COD_RASTREIO=$1
+if [ -z "$COD_RASTREIO" ]; then
+  echo -n "Código de rastreio: "
+  read -r COD_RASTREIO
+fi
+
+check_ret() {
+  if [ $? -ne 0 ]; then
+    echo "$1"
+    exit 1
+  fi
+}
+
+curl -L -S -s -A "$UA" "https://rastreamento.correios.com.br/core/securimage/securimage_show.php" -c /tmp/c.txt | icat
+check_ret "Erro ao baixar o captcha"
+
+echo -n "CAPTCHA: "
+read -r CAPTCHA
+
+curl -b /tmp/c.txt -S -s -A "$UA" -H "Accept: application/json" \
+  "https://rastreamento.correios.com.br/app/resultado.php?objeto=$COD_RASTREIO&captcha=$CAPTCHA&mqs=S" | \
+    node -e "
+  const TBL={}, fin=fs.readFileSync(0).toString('utf-8');
+  try {
+    JSON.parse(fin)
+      .eventos.map(x => {
+        TBL[
+          new Intl.DateTimeFormat('pt-BR', { dateStyle: 'short', timeStyle: 'short' }).format(new Date(x.dtHrCriado.date))
+        ] = {
+          DESC: x.descricao,
+          DE: x.unidade?.endereco?.cidade || x.unidade?.nome, 
+          PARA: x.unidadeDestino?.endereco?.cidade,
+        }
+      });
+      console.table(TBL);
+    } catch {
+      console.log(fin);
+    }
+"
