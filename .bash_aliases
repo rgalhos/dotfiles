@@ -17,7 +17,10 @@ alias trash="gio trash"
 alias ffind="find . -iname"
 alias myip=" ip addr | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 alias t=" x-terminal-emulator & disown"
-
+alias notes=" cat $HOME/.notes | sed ':a;N;\$!ba;s/\n\{2,\}/\n\n/g'"
+alias enotes=" $EDITOR $HOME/.notes"
+wnote() { echo "$@" >> "$HOME/.notes"; }
+alias wnotes=" wnote"
 
 # npm aliases
 alias npmi="npm i --save"
@@ -42,7 +45,7 @@ alias proton="proton-call -r"
 alias docker-compose="docker compose"
 alias https-server="http-server -S -C /disk/Coisas/cert.pem -K /disk/Coisas/key.pem -r --cors --no-dotfiles"
 alias ytmp3="notify-task youtube-dl --extract-audio --audio-format mp3 --prefer-ffmpeg"
-alias resplasma=" DISPLAY=:0 pkill -9 plasmashell && sleep 2 && plasmashell --replace &; disown"
+alias resplasma=" DISPLAY=:0 pkill -9 plasmashell && sleep 2 && plasmashell --replace & disown"
 
 
 # Aliases to my scripts
@@ -164,9 +167,6 @@ notify-task() {
 
 # Colored manpages
 man() {
-    local width=$(tput cols) 
-    [ $width -gt $MANWIDTH ] && width=$MANWIDTH
-    env MANWIDTH=$width \
     LESS_TERMCAP_mb=$'\e[01;31m' \
     LESS_TERMCAP_md=$'\e[01;38;5;74m' \
     LESS_TERMCAP_me=$'\e[0m' \
@@ -174,6 +174,6 @@ man() {
     LESS_TERMCAP_so=$'\e[38;5;246m' \
     LESS_TERMCAP_ue=$'\e[0m' \
     LESS_TERMCAP_us=$'\e[04;38;5;146m' \
-    man "$@"
+    command man "$@"
 }
 
