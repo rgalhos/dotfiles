@@ -1,0 +1,33 @@
+#!/bin/bash
+
+RAND_COMIC_URL='https://www.gocomics.com/random/garfield'
+HTML_TEST='<picture class="item-comic-image"><img class="lazyload img-fluid" srcset="'
+
+RESPONSE=$(curl -L -S -s -i "$RAND_COMIC_URL")
+
+COMIC_URL=$(\
+	echo "$RESPONSE" | \
+	grep '^Location: ' | \
+	cut -d' ' -f2 \
+)
+
+COMIC_IMG_URL=$(\
+	echo "$RESPONSE" | \
+	grep "$HTML_TEST" | \
+	grep -oEi 'data-srcset="[^ ]+' | \
+	cut -d'"' -f2 \
+)
+
+COMIC_RELEASE_DATE=$(\
+	echo "$RESPONSE" | \
+	grep 'name="startDate"' | \
+	grep -oEi 'placeholder="[^"]+"' | \
+	cut -d'"' -f2 \
+)
+
+if [ -n "$COMIC_IMG_URL" ]; then
+	#printf '\e]8;;%s\e\\%s\e]8;;\e\\\n' "$COMIC_URL" "$COMIC_RELEASE_DATE"
+    echo "$COMIC_RELEASE_DATE    ~    $COMIC_URL"
+	curl -L -s "$COMIC_IMG_URL" | kitty +kitten icat
+fi
+

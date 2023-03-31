@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 const { readFileSync, existsSync } = require('fs');
 const yargs = require('yargs/yargs');
 

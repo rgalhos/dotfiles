@@ -106,7 +106,10 @@ function replace(str) {
 function test(str) {
 	if (expr.test(str)) {
         const o = color ? (MATCH_COLOR + '$1\033[0m') : '$1';
-		return str.replace(new RegExp(`(${inputExp})`, flags), o);
+        if (keep)
+            return str.replace(new RegExp(`.*(${inputExp}).*`, flags), '$1');
+        else
+        	return str.replace(new RegExp(`(${inputExp})`, flags), o);
 	}
 }
 

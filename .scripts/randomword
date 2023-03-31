@@ -1,0 +1,27 @@
+#!/bin/bash
+# stardict-OxfordCollocationsDictionary-2.4.2.tar.bz2
+
+_randomword() {
+  def=
+
+  while [ "$(echo "$def" | wc -l)" -lt 3 ]; do
+    word=$(shuf /usr/share/dict/american-english -n1 | sed "s/'s$//")
+    def=$(sdcv -n "$word")
+  done
+
+  def=$(\
+  	echo "$def" | \
+      sed '5q;d' | \
+      sed -e 's/<br>/\n/gi' \
+        -e 's/<[^>]*>/ /g' \
+        -e 's/  */ /g' | \
+      awk '{gsub(/\|/, "\033[47m|\033[0m"); print}' |\
+      awk 'NR<4 || (NR>=4 && /^[[:blank:]]*[[:upper:]][[:upper:]]*[[:blank:]]/)' \
+  )
+
+  echo -n "\e[0;32m $word\e[0m"
+  echo "$def"
+}
+
+
+[[ "$TERM" = "xterm-kitty" && "$((RANDOM % 101))" -gt 95 ]] && _randomword

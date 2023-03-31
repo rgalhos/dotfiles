@@ -109,3 +109,10 @@ sudo-command-line() {
 zle -N sudo-command-line
 bindkey "^S" sudo-command-line
 
+# Dumb script that shows random colors and a cat face
+[ -f "$HOME/.scripts/kittyface" ] && \
+    . $HOME/.scripts/kittyface;
+
+[ -f "$HOME/.scripts/randomword" ] && \
+    . $HOME/.scripts/randomword;
+

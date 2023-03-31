@@ -1,0 +1,47 @@
+#!/bin/bash
+
+_kittykattyface() {
+    local faces=(
+    	$'(^._.^)ﾉ'
+        $'/ᐠ •ㅅ• ᐟ\\ﾉ'
+        $'(=⌒‿‿⌒=)'
+        $'(ㅇㅅㅇ❀)'
+        $'ฅ(ﾐ✪ ᆺ ✪ﾐ)∫'
+        $'人◕ ‿‿ ◕人＼'
+    )
+
+    #local set=( '255;255;255' '255;255;255' '255;255;255' '255;255;255' ) # '255;255;255' )
+    local set1=( '85;239;196'  '129;236;236' '116;185;255' '162;155;254' ) # '223;230;233' )
+    local set2=( '0;184;148'   '0;206;201'   '9;132;227'   '108;92;231'  ) # '178;190;195' )
+    local set3=( '255;234;167' '250;177;160' '255;118;117' '253;121;168' ) # '99;110;114'  )
+    local set4=( '253;203;110' '225;112;85'  '214;48;49'   '232;67;147'  ) # '45;52;54'    )
+    local set5=( '204;102;102' '222;147;95'  '240;198;116' '181;189;104' '129;162;190' '178;148;187' )
+
+    local randset=$(shuf -n1 -i 1-5) colors=
+    [ "$randset" = 1 ] && colors=( $set1 );
+    [ "$randset" = 2 ] && colors=( $set2 );
+    [ "$randset" = 3 ] && colors=( $set3 );
+    [ "$randset" = 4 ] && colors=( $set4 );
+    [ "$randset" = 5 ] && colors=( $set5 );
+
+    local face=${faces[ RANDOM % ${#faces[@]} + 1 ]}
+    local facelen=$(wc -L <<< "$face")
+    local colorlen="${#colors[@]}"
+    local totallen="$((colorlen * 3 * 2 + facelen + 4))"
+
+    printf " %.0s" {1..$(($(tput cols) / 2 - $totallen / 2))}
+
+    for c in "${colors[@]}"; do
+        echo -e -n "\e[48;2;""$c""m   "
+    done
+
+    echo -e -n "\e[0m  ${face}  "
+
+    for i in $(seq ${#colors[@]} -1 1); do
+        echo -e -n "\e[48;2;${colors[i]}m   "
+    done
+
+    echo -e '\e[0m'
+}
+
+[[ "$TERM" = "xterm-kitty" && "$((RANDOM % 101))" -gt 95 ]] && _kittykattyface

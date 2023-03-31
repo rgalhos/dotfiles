@@ -7,20 +7,24 @@ alias cdt="cd /tmp"
 alias c=" clear"
 alias q=" exit"
 alias :q=" exit"
+alias bat=' BAT_THEME="Catppuccin-mocha" batcat'
 alias k9="kill -9"
 alias pk9="pkill -9"
 alias icat="kitty +kitten icat"
 alias fdiff="kitty +kitten diff"
+alias transfer="kitty +kitten transfer"
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
 alias priv="opera --private"
 alias trash="gio trash"
 alias ffind="find . -iname"
+alias ports=" netstat -tulpn | grep 'LISTEN'"
 alias myip=" ip addr | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 alias t=" x-terminal-emulator & disown"
+
 alias notes=" cat $HOME/.notes | sed ':a;N;\$!ba;s/\n\{2,\}/\n\n/g'"
 alias enotes=" $EDITOR $HOME/.notes"
+alias wnotes=" cat - | tee -a $HOME/.notes >/dev/null"
 wnote() { echo "$@" >> "$HOME/.notes"; }
-alias wnotes=" wnote"
 
 # npm aliases
 alias npmi="npm i --save"
@@ -49,12 +53,14 @@ alias resplasma=" DISPLAY=:0 pkill -9 plasmashell && sleep 2 && plasmashell --re
 
 
 # Aliases to my scripts
-alias catj="$HOME/.scripts/catj.js"
+# No, I won't add '.scripts' to $PATH
+alias catj="$HOME/.scripts/catj"
 alias prettyj="catj"
-alias yexp="$HOME/.scripts/yexp.js"
-alias getj="$HOME/.scripts/getj.js"
-alias update-opera-ffmpeg="$HOME/.scripts/update-opera-ffmpeg.sh"
-alias rastreio="$HOME/.scripts/rastreio.sh"
+alias yexp="$HOME/.scripts/yexp"
+alias getj="$HOME/.scripts/getj"
+alias update-opera-ffmpeg="$HOME/.scripts/update-opera-ffmpeg"
+alias rastreio=" $HOME/.scripts/rastreio"
+alias garfield=" $HOME/.scripts/garfield"
 
 
 # Directory contents
@@ -68,12 +74,15 @@ if which exa &> /dev/null; then
     alias ladir=" exa -lhD --all"
 fi
 alias tree=" tree -a -I 'CVS|*.*.package|.svn|.git|.hg|.next|node_modules|bower_components' --dirsfirst"
-alias hls=" /bin/ls --color=tty --hyperlink=auto --group-directories-first"
+alias hls=" command ls --color=tty --hyperlink=auto --group-directories-first"
 alias hla=" hls -lAh"
 
 
-# Copy/paste on X and Wayland
-if [ "$XDG_SESSION_TYPE" = "x11" ]; then
+# Copy/paste on X and Wayland (or over ssh with kitty)
+if [ "$TERM" = "xterm-kitty" ]; then
+    alias xcopy="kitty +kitten clipboard"
+    alias xpaste="kitty +kitten clipboard --get-clipboard"
+elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
     alias xcopy="xclip -selection clipboard"
     alias xpaste="xclip -selection clipboad -o"
 else
@@ -81,10 +90,13 @@ else
     alias xpaste="wl-paste"
 fi
 
+alias ttycopy="tee $(tty) | xcopy"
+alias ttypaste="xpaste | tee $(tty)"
+
 
 # SSH public key
 alias sshpub=" cat $HOME/.ssh/id_rsa.pub"
-alias copysshpub=" sshpub | tee $(tty) | xcopy"
+alias copysshpub=" sshpub | ttycopy"
 
 httpicat() {
     if [ -n "$1" ]; then
@@ -135,26 +147,27 @@ shf() {
 alias showf="shf"
 
 fout() {
-    local fname=/tmp/$(openssl rand -hex 8) retval=0
-    echo $@ >> $fname
+    local fname=
+    fname=/tmp/$(openssl rand -hex 8) retval=0
+    echo $@ >> "$fname"
     retval=$?
-    [ $retval -eq 0 ] && echo -n $fname
+    [ $retval -eq 0 ] && echo -n "$fname"
     return retval
 }
 
 gt() {
-    local base_dir=$(git rev-parse --show-toplevel 2> /dev/null)
+    local base_dir=
+    base_dir=$(git rev-parse --show-toplevel 2> /dev/null)
     [ -z "$base_dir" ] && return 1;
-    cd $base_dir
+    cd "$base_dir" || return 1
 }
 
 notify() {
-    [ "$TERM" != "xterm-kitty" ] && return 0
-    if [ -n "$2" ]; then
+    if which notify-send &> /dev/null; then
+        notify-send "$1" "$2"
+    elif [ "$TERM" = "xterm-kitty" ]; then
         printf '\x1b]99;i=1:d=0;%s\x1b\\' "$1"
         printf '\x1b]99;i=1:d=1:p=body;%s\x1b\\' "$2"
-    elif [ -n "$1" ]; then
-        printf '\x1b]99;;%s\x1b\\' "$1"
     fi
 }
 
@@ -163,6 +176,27 @@ notify-task() {
     local retval=$?
     notify "Task $([ $retval -eq 0 ] && echo 'finished' || echo 'failed')"
     return retval
+}
+
+norc() {
+    local SH=
+    SH=$(basename "$(ps -hp $$ | awk '{ print $5 }')")
+    if [ "$SH" = "zsh" ]; then
+        zsh -f;
+    elif [ "$SH" = "bash" ]; then 
+        bash --norc
+    fi
+}
+
+pvi() {
+    local COLS LINES
+    COLS=$(($(tput cols) / 2))
+    LINES=$(tput lines)
+
+    find . -type f -exec file {} + | \
+    grep -oP '^.+:\s*\w+\s*image' | \
+    cut -d':' -f1 | \
+    fzf --preview "kitty +kitten icat --place ${COLS}x${LINES}@${COLS}x0 --transfer-mode file {}" --preview-window '~3'
 }
 
 # Colored manpages
