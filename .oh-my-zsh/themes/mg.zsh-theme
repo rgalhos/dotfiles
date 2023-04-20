@@ -1,162 +1,151 @@
 # This is my variation of the agnoster theme.
+# It uses Poweline Symbold and Nerd Fonts
 # Original theme: https://gist.github.com/3712874
 
-SHOW_RETURN_VALUE=true
-PROMPT_SYMBOL=$'\u03bb' # λ
+CONTEXT_ONLY_ON_SSH=true
+PROMPT_SYMBOL=';'
+#PROMPT_SYMBOL='\ue7a2 '
+COLORED_PROMPT=true
+SHOW_RETVAL=true
 
-####################################
+setopt promptsubst
+autoload -Uz vcs_info
 
-CURRENT_BG='NONE'
+SEGMENT_SEPARATOR=$'\ue0b2'
+ICON_BRANCH=$'\ue0a0' # pl-branch
+ICON_AS_ROOT=$'\Uf01e5' # nf-md-duck
+ICON_BG_JOBS=$'\Uf1323' # nf-md-hammer_wrench
+ICON_BISECT=$'\ueaaf' # nf-cod-bug
+ICON_MERGE_HEAD=$'\uebab' # nf-cod-merge
+ICON_REBASE=$'\ue726'  # nf-dev-git_pull_request
+ICON_STAGED='✚'
+ICON_UNSTAGED='±'
+ICON_DETACHED_HEAD=$'\u27a6'
 
-case ${SOLARIZED_THEME:-dark} in
-    light) CURRENT_FG='white';;
-    *)     CURRENT_FG='black';;
-esac
-
-() {
-  local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-  SEGMENT_SEPARATOR=$'\ue0b0'
-  SEGMENT_SEPARATOR_RIGHT=$'\ue0b2'
-  GIT_NOT_INSTALLED=false
-  INSIDE_GIT_FOLDER=false
-
-  ! which git &> /dev/null && \
-    GIT_NOT_INSTALLED=true
-}
+PREVBG=
+BG=
+FG=
 
 prompt_segment() {
-  local bg fg
+    PREVBG=$BG
+    BG="$1"
+    FG="$2"
 
-  [[ -n $1 ]] && bg="%K{$1}" || bg="%k"
-  [[ -n $2 ]] && fg="%F{$2}" || fg="%f"
-  if [[ $CURRENT_BG != 'NONE' && $1 != $CURRENT_BG ]]; then
-    echo -n " %{$bg%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR%{$fg%} "
-  else
-    echo -n "%{$bg%}%{$fg%} "
-  fi
+    if [ -z "${PREVBG+}" ]; then
+        echo -n "%{%F{$BG}%}$SEGMENT_SEPARATOR"
+    fi
 
-  CURRENT_BG=$1
-  [[ -n $3 ]] && echo -n $3
-}
+    echo -n "%{%K{$BG}%}"
 
-prompt_dir() {
-  if $INSIDE_GIT_FOLDER; then
-    local base_dir=$(git rev-parse --show-toplevel)
-    echo -n "%{%F{blue}%}${${PWD}/${base_dir%\/*}}"
-  else
-    echo -n '%{%F{blue}%}%~'
-  fi
+    [[ -n "$FG" ]] && echo -n "%{%F{$FG}%} "
+
+    [[ -n "$3" ]] && echo -n "$3 "
 }
 
 prompt_git() {
-  local PL_BRANCH_CHAR repo_path dirty ref
+    (( $+commands[git] )) || return;
 
-  () {
-    local LC_ALL="" LC_CTYPE="en_US.UTF-8"
-    PL_BRANCH_CHAR=$'\ue0a0'         # 
-    #PL_BRANCH_CHAR='\U1F988'         # 🦈
-  }
+    REPO_PATH=$(git rev-parse --git-dir 2>/dev/null)
 
-  if $INSIDE_GIT_FOLDER; then
-    repo_path=$(git rev-parse --git-dir 2>/dev/null)
-    dirty=$(parse_git_dirty)
-    ref=$(git symbolic-ref HEAD 2> /dev/null) || ref="➦ $(git rev-parse --short HEAD 2> /dev/null)"
+    [ ! $REPO_PATH ] && return;
+
+    IS_DIRTY=$(parse_git_dirty)
+    REF=$(git symbolic-ref HEAD 2>/dev/null) || \
+        REF="$ICON_DETACHED_HEAD $(git rev-parse --short HEAD 2>/dev/null)"
 
     if [[ -e "${repo_path}/BISECT_LOG" ]]; then
-      mode=" <B>"
+      MODE=" $ICON_BISECT"
     elif [[ -e "${repo_path}/MERGE_HEAD" ]]; then
-      mode=" >M<"
+      MODE=" $ICON_MERGE_HEAD"
     elif [[ -e "${repo_path}/rebase" || -e "${repo_path}/rebase-apply" || -e "${repo_path}/rebase-merge" || -e "${repo_path}/../.dotest" ]]; then
-      mode=" >R>"
+      MODE=" $ICON_REBASE"
     fi
-
-    setopt promptsubst
-    autoload -Uz vcs_info
 
     zstyle ':vcs_info:*' enable git
     zstyle ':vcs_info:*' get-revision true
     zstyle ':vcs_info:*' check-for-changes true
-    zstyle ':vcs_info:*' stagedstr '✚'
-    zstyle ':vcs_info:*' unstagedstr '±'
+    zstyle ':vcs_info:*' stagedstr "$ICON_STAGED"
+    zstyle ':vcs_info:*' unstagedstr "$ICON_UNSTAGED"
     zstyle ':vcs_info:*' formats '%u%c'
     zstyle ':vcs_info:*' actionformats '%u%c'
     vcs_info
 
-    if [[ -n $dirty ]]; then
-      echo -n " %{%F{yellow}%}$SEGMENT_SEPARATOR_RIGHT"
-      prompt_segment yellow black
+    if [[ -n $IS_DIRTY ]]; then
+        prompt_segment yellow black
     else
-      echo -n " %{%F{green}%}$SEGMENT_SEPARATOR_RIGHT"
-      prompt_segment green $CURRENT_FG
+        prompt_segment green black
     fi
 
-    echo -n "${vcs_info_msg_0_}${${ref:gs/%/%%}/refs\/heads\//$PL_BRANCH_CHAR }${mode} "
-  fi
-}
-
-prompt_status() {
-  local -a symbols
-
-  # Ignore ^C
-  [[ $RETVAL -ne 0 && $RETVAL -ne 130 ]] && $SHOW_RETURN_VALUE && symbols+="%{%F{red}%}${RETVAL}"
-  [[ $UID -eq 0 ]] && symbols+="%{%F{yellow}%}#"
-  [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{cyan}%}\u2699" # ⚙
-
-  [[ -n "$symbols" ]] && prompt_segment black default "$symbols"
+    echo -n "${vcs_info_msg_0_}${${REF:gs/%/%%}/refs\/heads\//$ICON_BRANCH }${MODE} "
 }
 
 prompt_context() {
-  if [[ -n "$SSH_CLIENT" ]]; then
-    prompt_segment red $CURRENT_FG "%{%F{white}%}$USER@$HOST"
-  else
-    prompt_segment blue $CURRENT_FG "%{%F{white}%}$PROMPT_SYMBOL"
-  fi
+    if [[ -n "$SSH_CLIENT" ]]; then
+        prompt_segment red white "%n@%m"
+    elif ! $CONTEXT_ONLY_ON_SSH; then
+        prompt_segment blue white "%n@%m"
+    fi
 }
 
-prompt_end() {
-  if [[ -n $CURRENT_BG ]]; then
-    echo -n " %{%k%F{$CURRENT_BG}%}$SEGMENT_SEPARATOR"
-  else
-    echo -n "%{%k%}"
-  fi
+prompt_dir() {
+    PREVBG=
+    color_reset
 
-  if [[ $RETVAL -eq 130 ]] ; then
-    echo -n "%{%F{yellow}%} ;"
-  elif [[ $RETVAL -eq 0 ]] || $SHOW_RETURN_VALUE; then 
-    echo -n "%{%F{white}%} ;"
-  else
-    echo -n "%{%F{red}%} ;"
-  fi
+    if BASE_DIR=$(git rev-parse --show-toplevel 2>/dev/null) then
+        echo -n "%{%F{blue}%}${${PWD}/${BASE_DIR%\/*}} "
+    else
+        echo -n '%{%F{blue}%}%~ '
+    fi
+}
 
-  echo -n "%{%f%}"
+prompt_status() {
+    local -a symbols
 
-  CURRENT_BG=''
+    [ $UID = 0 ] && symbols+="%{%F{yellow}%}$ICON_AS_ROOT"
+    [[ $(jobs -l | wc -l) -gt 0 ]] && symbols+="%{%F{green}%}$ICON_BG_JOBS"
+
+    [[ -n "$symbols" ]] && echo -n "${symbols[*]} "
+}
+
+prompt_retval() {
+    if [[ $SHOW_RETVAL && $RETVAL -ne 0 && $RETVAL -ne 130 ]]; then
+        prompt_segment black red "$RETVAL"
+    fi
+}
+
+color_reset() {
+    echo -n "%{%f%b%k%}"
 }
 
 build_prompt() {
-  RETVAL=$?
-  prompt_status
-  prompt_context
-  prompt_end
-}
+    RETVAL=$?
 
-check_inside_git_folder() {
-  if $GIT_NOT_INSTALLED; then
-    return
-  elif [[ "$(git config --get oh-my-zsh.hide-status 2>/dev/null)" = 1 ]]; then
-    return
-  elif [[ "$(git rev-parse --is-inside-work-tree 2>/dev/null)" = "true" ]]; then
-    INSIDE_GIT_FOLDER=true
-  else
-    INSIDE_GIT_FOLDER=false
-  fi
+    if [[ ! $COLORED_PROMPT || $RETVAL = 0 ]]; then
+        echo -n '%{%F{white}%}'
+    elif [[ $RETVAL -eq 130 ]]; then
+        echo -n '%{%F{yellow}%}'
+    else
+        echo -n '%{%F{red}%}'
+    fi
+
+    echo -n " $PROMPT_SYMBOL"
+
+    color_reset
 }
 
 build_rps1() {
-  check_inside_git_folder
-  prompt_dir
-  prompt_git
+    RETVAL=$?
+
+    # Print some whitespaces
+    printf " %.0s" {1..$(expr $(tput cols) / 4)}
+
+    prompt_status
+    prompt_dir
+    prompt_git
+    prompt_context
+    prompt_retval
+    color_reset
 }
 
-PROMPT='%{%f%b%k%}$(build_prompt) '
-RPS1='$(printf " %.0s" {1..$(expr $(tput cols) / 4)})$(build_rps1)'
+PROMPT='$(build_prompt) '
+RPS1='$(build_rps1)'
