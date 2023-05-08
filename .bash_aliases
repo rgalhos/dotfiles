@@ -6,7 +6,7 @@ alias cdt="cd /tmp"
 alias c=" clear"
 alias q=" exit"
 alias :q=" exit"
-alias bat=' BAT_THEME="Catppuccin-mocha" batcat'
+alias bat=' BAT_THEME="Catppuccin-macchiato" batcat'
 alias k9="kill -9"
 alias pk9="pkill -9"
 alias icat="kitty +kitten icat"
@@ -47,7 +47,7 @@ alias alu=" apt list --upgradable"
 alias proton="proton-call -r"
 #alias proton="STEAM_COMPAT_CLIENT_INSTALL_PATH=$HOME/.steam/steam STEAM_COMPAT_DATA_PATH=$HOME/.steam/steam/steamapps/common/Proton\ \-\ Experimental/files/share/wine $HOME/.steam/steam/steamapps/common/Proton\ 7.0/proton run "
 alias docker-compose="docker compose"
-alias https-server="http-server -S -C /disk/Coisas/cert.pem -K /disk/Coisas/key.pem -r --cors --no-dotfiles"
+alias https-server="http-server -S -C ~/.localhost.crt -K ~/.localhost.key -r --cors --no-dotfiles"
 alias ytmp3="notify-task youtube-dl --extract-audio --audio-format mp3 --prefer-ffmpeg"
 alias resplasma=" DISPLAY=:0 pkill -9 plasmashell && sleep 2 && plasmashell --replace & disown"
 
@@ -223,6 +223,35 @@ pvi() {
         grep -oP '^.+:\s*\w+\s*image' |
         cut -d':' -f1 |
         fzf --preview "kitty +kitten icat --place ${COLS}x${LINES}@${COLS}x0 --transfer-mode file {}" --preview-window '~3'
+}
+
+kdshare() {
+    local devices device_id files
+    files=()
+
+    if [ $# -ge 1 ]; then
+        files=("$@")
+    else
+        files=("$(find . -maxdepth 3 -type f | fzf)")
+    fi
+
+    [ -z "${files[*]}" ] && return 1
+
+    kdeconnect-cli --refresh
+    devices=$(kdeconnect-cli --list-available --id-name-only)
+
+    select device in "${devices[@]}"; do
+        device_id="$(echo "$device" | cut -d' ' -f1)"
+        notify-task kdeconnect-cli --share "${files[@]}" -d "$device_id"
+        break
+    done
+}
+
+glog() {
+    git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" |
+        fzf --ansi --no-sort --reverse --tiebreak=index \
+            --preview "git show \$(echo '{}' | cut -d' ' -f1) | batcat -n --color=always" \
+            --preview-window '~3'
 }
 
 # Colored manpages

@@ -1,6 +1,3 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
@@ -96,9 +93,22 @@ export NVM_DIR="$HOME/.nvm"
 source $HOME/.bash_aliases
 source $HOME/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
+
 # Load fzf binds
 [ -f "$HOME/.fzf-bindings.zsh" ] && which fzf &> /dev/null && \
     source $HOME/.fzf-bindings.zsh
+
+export FZF_DEFAULT_OPTS="
+    --color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796
+    --color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6
+    --color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796"
+
+export FZF_CTRL_T_OPTS="
+    --preview 'BAT_THEME="Catppuccin-macchiato" batcat -n --color=always {}'
+    --bind 'ctrl-/:change-preview-window(down|hidden|)'
+    --preview-window '~3'
+    --height 90%"
+
 
 # ^S prepends "sudo " to the buffer
 sudo-command-line() {
@@ -109,10 +119,9 @@ sudo-command-line() {
 zle -N sudo-command-line
 bindkey "^S" sudo-command-line
 
+
 # Dumb script that shows random colors and a cat face
 [ -f "$HOME/.scripts/kittyface" ] && \
     . $HOME/.scripts/kittyface;
 
-[ -f "$HOME/.scripts/randomword" ] && \
-    . $HOME/.scripts/randomword;
-
+export PATH=$PATH:$HOME/.spicetify
