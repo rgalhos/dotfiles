@@ -106,13 +106,6 @@ alias ttypaste="xpaste | tee $(tty)"
 alias sshpub=" cat $HOME/.ssh/id_rsa.pub"
 alias copysshpub=" sshpub | ttycopy"
 
-httpicat() {
-    if [ -n "$1" ]; then
-        curl -k -L -s "$1" | icat
-    else
-        echo "no url specified"
-    fi
-}
 
 dlm3u8() {
     notify-task ffmpeg -i "$1" -bsf:a aac_adtstoasc -vcodec copy -c copy -crf 23 "${2:-file.mp4}"
@@ -155,31 +148,10 @@ ex() {
     fi
 }
 
-tt() {
-    if [ -n "$1" ]; then
-        local fname="/tmp/$1" retval
-        touch "$fname"
-        retval=$?
-        [ $retval -ne 0 ] && return $retval
-        echo -n "$fname"
-        return 0
-    fi
-    return 1
-}
-
 shf() {
     nautilus "$1" &>/dev/null
 }
 alias showf="shf"
-
-fout() {
-    local fname=
-    fname=/tmp/$(openssl rand -hex 8) retval=0
-    echo $@ | tee -a "$fname" &>/dev/null
-    retval=$?
-    [ $retval -eq 0 ] && echo -n "$fname"
-    return retval
-}
 
 gt() {
     local base_dir=
@@ -250,7 +222,7 @@ kdshare() {
 glog() {
     git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" |
         fzf --ansi --no-sort --reverse --tiebreak=index \
-            --preview "git show \$(echo '{}' | cut -d' ' -f1) | batcat -n --color=always" \
+            --preview "git show \$(echo {} | cut -d' ' -f1) | batcat -n --color=always" \
             --preview-window '~3'
 }
 

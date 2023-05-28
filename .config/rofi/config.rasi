@@ -1,0 +1,26 @@
+configuration {
+    modi: "run,drun,window,combi";
+    icon-theme: "Oranchelo";
+    show-icons: true;
+    terminal: "kitty";
+    drun-display-format: "{icon}{name}";
+    location: 0;
+    disable-history: false;
+    hide-scrollbar: true;
+    display-drun: "  ";
+    display-run: "  ";
+    display-window: " 﩯 ";
+    display-network: " 󰤨 ";
+    display-combi: " 🐱 ";
+    sidebar-mode: false;
+    combi-modi: "window,drun";
+}
+
+@theme "catppuccin-macchiato"
+
+window {
+    width: 800px;
+    border: 3px;
+    border-color: #c6a0f6;
+}
+
