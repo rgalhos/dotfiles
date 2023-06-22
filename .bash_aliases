@@ -57,7 +57,6 @@ alias catj="$HOME/.scripts/catj"
 alias prettyj="catj"
 alias yexp="$HOME/.scripts/yexp"
 alias getj="$HOME/.scripts/getj"
-alias update-opera-ffmpeg="$HOME/.scripts/update-opera-ffmpeg"
 alias rastreio=" $HOME/.scripts/rastreio"
 alias garfield=" $HOME/.scripts/garfield"
 
