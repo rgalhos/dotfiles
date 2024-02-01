@@ -119,6 +119,15 @@ sudo-command-line() {
 zle -N sudo-command-line
 bindkey "^S" sudo-command-line
 
+# less(1) options
+export LESS='-Rij.5'
+export LESS_TERMCAP_mb=$'\e[01;31m'
+export LESS_TERMCAP_md=$'\e[01;38;5;74m'
+export LESS_TERMCAP_me=$'\e[0m'
+export LESS_TERMCAP_se=$'\e[0m'
+export LESS_TERMCAP_so=$'\e[31m'
+export LESS_TERMCAP_ue=$'\e[0m'
+export LESS_TERMCAP_us=$'\e[04;38;5;146m'
 
 # Dumb script that shows random colors and a cat face
 [ -f "$HOME/.scripts/kittyface" ] && \

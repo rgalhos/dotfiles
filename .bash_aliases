@@ -1,7 +1,3 @@
-alias cd..="cd .."
-alias cd-="cd -"
-alias cdt="cd /tmp"
-
 # Shortcuts
 alias c=" clear"
 alias q=" exit"
@@ -17,35 +13,27 @@ alias priv="opera --private"
 alias trash="gio trash"
 alias ffind="find . -iname"
 alias ports=" netstat -tulpn | grep 'LISTEN'"
-alias myip=" ip addr | sed -En 's/127.0.0.1//;s/.*inet (addr:)?(([0-9]*\.){3}[0-9]*).*/\2/p'"
 alias uncommit="git reset --soft HEAD^"
-alias dush="du -sh"
-alias du-sh="du -sh"
 alias t=" x-terminal-emulator & disown"
+alias ç='l' # sometimes I press 'ç' instead of 'l'
 
-alias notes=" cat $HOME/.notes | sed ':a;N;\$!ba;s/\n\{2,\}/\n\n/g'"
-alias enotes=" $EDITOR $HOME/.notes"
-alias wnotes=" cat - | tee -a $HOME/.notes >/dev/null"
-wnote() { echo "$@" >>"$HOME/.notes"; }
-
-# npm aliases
-alias npmi="npm i --save"
-alias npmid="npm i --save-dev"
-alias npmg="npm i -g"
+alias notes=" cat ~/.notes | sed ':a;N;\$!ba;s/\n\{2,\}/\n\n/g'"
+alias enotes=" $EDITOR ~/.notes"
+alias wnotes=" cat - | tee -a ~/.notes >/dev/null"
+wnote() { echo "$@" >>"~/.notes"; }
 
 # APT-related aliases
-alias apti="apt install"
 alias sai="sudo apt install"
 alias say="sudo apt install -y"
 alias sau="sudo apt update"
 alias acs=" apt-cache search"
 alias aci=" apt info"
-alias alg=" apt list --installed | grep"
+alias alg=" apt list --installed | grep -i"
 alias alu=" apt list --upgradable"
 
 # Misc
 alias proton="proton-call -r"
-#alias proton="STEAM_COMPAT_CLIENT_INSTALL_PATH=$HOME/.steam/steam STEAM_COMPAT_DATA_PATH=$HOME/.steam/steam/steamapps/common/Proton\ \-\ Experimental/files/share/wine $HOME/.steam/steam/steamapps/common/Proton\ 7.0/proton run "
+#alias proton="STEAM_COMPAT_CLIENT_INSTALL_PATH=~/.steam/steam STEAM_COMPAT_DATA_PATH=~/.steam/steam/steamapps/common/Proton\ \-\ Experimental/files/share/wine ~/.steam/steam/steamapps/common/Proton\ 7.0/proton run "
 alias docker-compose="docker compose"
 alias https-server="http-server -S -C ~/.localhost.crt -K ~/.localhost.key -r --cors --no-dotfiles"
 alias ytmp3="notify-task youtube-dl --extract-audio --audio-format mp3 --prefer-ffmpeg"
@@ -53,12 +41,12 @@ alias resplasma=" DISPLAY=:0 pkill -9 plasmashell && sleep 2 && plasmashell --re
 
 # Aliases to my scripts
 # No, I won't add '.scripts' to $PATH
-alias catj="$HOME/.scripts/catj"
+alias catj="~/.scripts/catj"
 alias prettyj="catj"
-alias yexp="$HOME/.scripts/yexp"
-alias getj="$HOME/.scripts/getj"
-alias rastreio=" $HOME/.scripts/rastreio"
-alias garfield=" $HOME/.scripts/garfield"
+alias yexp="~/.scripts/yexp"
+alias getj="~/.scripts/getj"
+alias rastreio=" ~/.scripts/rastreio"
+alias garfield=" ~/.scripts/garfield"
 
 # Directory contents
 if which exa &>/dev/null; then
@@ -102,7 +90,7 @@ alias ttycopy="tee $(tty) | xcopy"
 alias ttypaste="xpaste | tee $(tty)"
 
 # SSH public key
-alias sshpub=" cat $HOME/.ssh/id_rsa.pub"
+alias sshpub=" cat ~/.ssh/id_rsa.pub"
 alias copysshpub=" sshpub | ttycopy"
 
 
@@ -173,16 +161,6 @@ notify-task() {
     local retval=$?
     notify "Task $([ $retval -eq 0 ] && echo 'finished' || echo 'failed')"
     return retval
-}
-
-norc() {
-    local SH=
-    SH=$(basename "$(ps -hp $$ | awk '{ print $5 }')")
-    if [ "$SH" = "zsh" ]; then
-        zsh -f
-    elif [ "$SH" = "bash" ]; then
-        bash --norc
-    fi
 }
 
 pvi() {
