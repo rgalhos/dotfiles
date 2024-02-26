@@ -2,7 +2,7 @@
 alias c=" clear"
 alias q=" exit"
 alias :q=" exit"
-alias bat=' BAT_THEME="Catppuccin-macchiato" batcat'
+alias bat="batcat"
 alias k9="kill -9"
 alias pk9="pkill -9"
 alias icat="kitty +kitten icat"
@@ -20,7 +20,7 @@ alias ç='l' # sometimes I press 'ç' instead of 'l'
 alias notes=" cat ~/.notes | sed ':a;N;\$!ba;s/\n\{2,\}/\n\n/g'"
 alias enotes=" $EDITOR ~/.notes"
 alias wnotes=" cat - | tee -a ~/.notes >/dev/null"
-wnote() { echo "$@" >>"~/.notes"; }
+wnote() { echo "$@" >>"$HOME/.notes"; }
 
 # APT-related aliases
 alias sai="sudo apt install"
@@ -36,7 +36,7 @@ alias proton="proton-call -r"
 #alias proton="STEAM_COMPAT_CLIENT_INSTALL_PATH=~/.steam/steam STEAM_COMPAT_DATA_PATH=~/.steam/steam/steamapps/common/Proton\ \-\ Experimental/files/share/wine ~/.steam/steam/steamapps/common/Proton\ 7.0/proton run "
 alias docker-compose="docker compose"
 alias https-server="http-server -S -C ~/.localhost.crt -K ~/.localhost.key -r --cors --no-dotfiles"
-alias ytmp3="notify-task youtube-dl --extract-audio --audio-format mp3 --prefer-ffmpeg"
+alias ytmp3="notify-task yt-dlp -f ba -x --audio-format mp3"
 alias resplasma=" DISPLAY=:0 pkill -9 plasmashell && sleep 2 && plasmashell --replace & disown"
 
 # Aliases to my scripts
@@ -71,7 +71,7 @@ alias hla=" hls -lAh"
 
 tree() {
     # exa --tree -a -I 'CVS|*.*.package|.svn|.git|.hg|.next|node_modules|bower_components' -L "${1:-3}" --group-directories-first --icons
-    command tree "${1:-.}" -aC -I 'CVS|*.*.package|.svn|.git|.hg|.next|node_modules|bower_components' -L "${2:-3}" --dirsfirst
+    command tree "${1:-.}" -aC -I 'CVS|*.*.package|.svn|.git|.hg|.next|node_modules|bower_components' -L "${2:-5}" --dirsfirst
 }
 
 # Copy/paste on X and Wayland (or over ssh with kitty)
@@ -197,21 +197,13 @@ kdshare() {
 }
 
 glog() {
-    git log --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr" |
+    git log --color=always --format="%C(auto)%h%d %s %C(blue)%C(bold)%cr" |
         fzf --ansi --no-sort --reverse --tiebreak=index \
             --preview "git show \$(echo {} | cut -d' ' -f1) | batcat -n --color=always" \
+            --bind "enter:execute(git show \$(echo {} | cut -d' ' -f1))" \
             --preview-window '~3'
 }
 
-# Colored manpages
-man() {
-    LESS='-Rij.5' \
-        LESS_TERMCAP_mb=$'\e[01;31m' \
-        LESS_TERMCAP_md=$'\e[01;38;5;74m' \
-        LESS_TERMCAP_me=$'\e[0m' \
-        LESS_TERMCAP_se=$'\e[0m' \
-        LESS_TERMCAP_so=$'\e[31m' \
-        LESS_TERMCAP_ue=$'\e[0m' \
-        LESS_TERMCAP_us=$'\e[04;38;5;146m' \
-        command man "$@"
+gdiff() {
+    git diff --name-only --relative --diff-filter=d | xargs batcat --diff
 }

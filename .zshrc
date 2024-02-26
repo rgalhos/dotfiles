@@ -74,7 +74,7 @@ source $ZSH/oh-my-zsh.sh
 
 # User configuration
 export STEAMAPPS_SSD="$HOME/.steam/steam/steamapps/"
-export STEAMAPPS_HDD="/disk/SteamLibrary/steamapps/"
+export STEAMAPPS_HDD="/nvme1n1/SteamLibrary/steamapps/"
 
 export EDITOR=vim
 
@@ -104,7 +104,7 @@ export FZF_DEFAULT_OPTS="
     --color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796"
 
 export FZF_CTRL_T_OPTS="
-    --preview 'BAT_THEME="Catppuccin-macchiato" batcat -n --color=always {}'
+    --preview 'batcat -n --color=always {}'
     --bind 'ctrl-/:change-preview-window(down|hidden|)'
     --preview-window '~3'
     --height 90%"
@@ -128,6 +128,9 @@ export LESS_TERMCAP_se=$'\e[0m'
 export LESS_TERMCAP_so=$'\e[31m'
 export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[04;38;5;146m'
+
+# batcat theme
+export BAT_THEME="Catppuccin-macchiato"
 
 # Dumb script that shows random colors and a cat face
 [ -f "$HOME/.scripts/kittyface" ] && \
