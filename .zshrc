@@ -70,6 +70,12 @@ ZSH_THEME="mg"
 # Add wisely, as too many plugins slow down shell startup.
 # plugins=(zsh-syntax-highlighting)
 
+# You may need to manually set your language environment
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export LC_CTYPE=en_US.UTF-8
+export LANGUAGE=en_US.UTF-8
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -77,11 +83,6 @@ export STEAMAPPS_SSD="$HOME/.steam/steam/steamapps/"
 export STEAMAPPS_HDD="/nvme1n1/SteamLibrary/steamapps/"
 
 export EDITOR=vim
-
-# You may need to manually set your language environment
-export LANG=en_US.UTF-8
-export LC_ALL=en_US.UTF-8
-export LANGUAGE=en_US.UTF-8
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -136,4 +137,5 @@ export BAT_THEME="Catppuccin-macchiato"
 [ -f "$HOME/.scripts/kittyface" ] && \
     . $HOME/.scripts/kittyface;
 
-export PATH=$PATH:$HOME/.spicetify
+export PATH=/var/lib/snapd/snap/bin:$PATH:$HOME/.spicetify:$HOME/.local/bin
+

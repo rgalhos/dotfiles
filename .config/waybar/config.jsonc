@@ -1,0 +1,234 @@
+{
+    "margin": "0 5 0 5",
+    "modules-left": [
+        "hyprland/workspaces",
+        "hyprland/window"
+    ],
+    "modules-center": [
+        // "privacy",
+        "image#album-art",
+        "custom/spotify",
+    ],
+    "modules-right": [
+        "custom/notification",
+        "privacy",
+        "network",
+        "pulseaudio",
+        "cpu",
+        "memory",
+        "tray",
+        "clock"
+    ],
+
+
+    //***************************
+    //*  Modules configuration  *
+    //***************************
+
+    "hyprland/workspaces": {
+        "disable-scroll": true,
+        "sort-by-number": true,
+        "show-special": true,
+        "format": "{icon}",
+        "persistent-workspaces": {
+            "1": [],
+            "2": [],
+            "3": [],
+            "4": [],
+            "5": [],
+            "6": [],
+            "7": [],
+            "8": [],
+            "9": [],
+            // "special:browser": [],
+            // "special:whatsapp": [],
+            // "special:discord": [],
+            // "special:spotify": []
+        },
+        "format-icons": {
+            "urgent": "󰊠",
+            "active": "󰮯",
+            "default": "󱁂",
+            "empty": "",
+            // "browser": "󰖟",
+            "1whatsapp": "<span color='#25d366'></span>",
+            "2discord": "<span color='#5865f2' font='Symbols Nerd Font Mono'></span>",
+            "3spotify": "<span color='#1db954'></span>",
+            "magicA": "<span color='#cba6f7' font='Symbols Nerd Font Mono'>ᵃ</span>",
+            "magicS": "<span color='#cba6f7' font='Symbols Nerd Font Mono'>ˢ</span>",
+            "magicD": "<span color='#cba6f7' font='Symbols Nerd Font Mono'>ᵈ</span>",
+        }
+    },
+
+    "hyprland/window": {
+        "format": "{}",
+        "max-length": 50,
+        "on-click": "hyprctl dispatch fullscreen 1",
+        "on-click-middle": "hyprctl dispatch killactive",
+        "rewrite": {
+            "": "🦈"
+        }
+    },
+
+    "hyprland/language": {
+        "format": "{} ",
+        "min-length": 5,
+        "tooltip": false
+    },
+
+    "keyboard-state": {
+        //"numlock": true,
+        "capslock": true,
+        "format": "{name} {icon} ",
+        "format-icons": {
+            "locked": " ",
+            "unlocked": ""
+        },
+    },
+
+    "privacy": {
+        "icon-spacing": 8,
+        "icon-size": 18,
+        "transition-duration": 250,
+        "modules": [
+            {
+                "type": "screenshare",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-out",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            },
+            {
+                "type": "audio-in",
+                "tooltip": true,
+                "tooltip-icon-size": 24
+            }
+        ]
+    },
+
+    "network": {
+        "interval": 1,
+        "format": "{ipaddr} | <span font='16px' color='#89b4fa'>󰕒</span> {bandwidthUpBytes}  <span font='16px' color='#89b4fa'>󰇚</span> {bandwidthDownBytes}",
+        "format-disconnected": "Disconnected",
+        "format-disabled": "",
+        "tooltip-format": "IP   {ipaddr}\nMASK {netmask}/{cidr}\n{ifname} via {gwaddr}",
+    },
+
+    "clock": {
+        "interval": 1,
+        // "timezone": "America/New_York",
+        "tooltip-format": "<tt><big>{calendar}</big></tt>",
+        "format": "{:%d %b | %H:%M:%S}",
+        "calendar": {
+            "mode"          : "year",
+            "mode-mon-col"  : 2,
+            "weeks-pos"     : "right",
+            "on-scroll"     : 1,
+            "format": {
+                "months":     "<span color='#ffead3'><b>{}</b></span>",
+                "days":       "<span color='#ecc6d9'><b>{}</b></span>",
+                "weeks":      "<span color='#99ffdd'><b>W{}</b></span>",
+                "weekdays":   "<span color='#ffcc66'><b>{}</b></span>",
+                "today":      "<span color='#ff6699'><b><u>{}</u></b></span>"
+            },
+        },
+        "actions":  {
+            "on-click-right": "mode",
+            "on-click-forward": "tz_up",
+            "on-click-backward": "tz_down",
+            "on-scroll-up": "shift_up",
+            "on-scroll-down": "shift_down"
+        }
+    },
+
+    "pulseaudio": {
+        "scroll-step": 5, // %, can be a float
+        "reverse-scrolling": 1,
+        "format": "{volume}% {icon} {format_source}",
+        "format-bluetooth": "{volume}% 󰂯 {format_source}",
+        "format-bluetooth-muted": " 󰂯 {format_source}",
+        "format-muted": "<span color='#f38ba8'>muted 󰝟</span> {format_source}",
+        "format-source": "{volume}% ",
+        "format-source-muted": "<span color='#f38ba8'>muted </span>",
+        "format-icons": {
+            "headphone": "󰋋",
+            "hands-free": "",
+            "headset": "󰋎",
+            "phone": "",
+            "portable": "",
+            "car": "",
+            "default": ["奄", "奔", "墳"]
+        },
+        "on-click": "pavucontrol",
+        // "tooltip": true,
+        // "tooltip-format": "IN\t a\nOUT\t{desc}",
+        "min-length": 13,
+    },
+
+    "cpu": {
+        "interval": 1,
+        "format": "<span font='16px'>󰍛</span> CPU {usage}%",
+        "on-click": "gnome-system-monitor",
+    },
+
+    "memory": {
+        "interval": 1,
+        "format": "<span font='16px'>󰍛</span> {used:0.2f} GB ({percentage}%)",
+        "tooltip": true,
+        "tooltip-format":"MEM: {used:0.2f} GB / {total:0.2f} GB\nSWP: {swapUsed:0.2f} GB / {swapTotal:0.2f} GB",
+        "on-click": "gnome-system-monitor",
+    },
+
+    "tray": {
+        "icon-size": 18,
+        "spacing": 8
+    },
+
+    "custom/notification": {
+        "tooltip": false,
+        // "format": "{icon}",
+        "format": "    ",
+        "format-icons": {
+          "notification": "<span foreground='red'><sup></sup></span>",
+          "none": "",
+          "dnd-notification": "<span foreground='red'><sup></sup></span>",
+          "dnd-none": "",
+          "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+          "inhibited-none": "",
+          "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
+          "dnd-inhibited-none": ""
+        },
+        "return-type": "json",
+        "exec-if": "which swaync-client && [ $(swaync-client --count) -gt 0 ]",
+        "exec": "swaync-client -swb",
+        "on-click": "swaync-client -t -swb",
+        "on-click-right": "swaync-client -d -swb",
+        "escape": true
+    },
+
+    "custom/spotify": {
+        "exec-if": "[ $(playerctl -p spotify status) = 'Playing' ]",
+        "exec": "~/.config/waybar/bin/spotify.sh",
+        "return-type": "json",
+        "format": "{}",
+        "interval": 1,
+        "tooltip": true,
+        "on-click": "playerctl -p spotify play-pause",
+        "on-scroll-up": "playerctl -p spotify volume $(bc <<< \"$(playerctl -p spotify volume) + 0.05\")",
+        "on-scroll-down": "playerctl -p spotify volume $(bc <<< \"$(playerctl -p spotify volume) - 0.05\")",
+    },
+
+    "image#album-art": {
+        "exec-if": "[ $(playerctl -p spotify status) = 'Playing' ]",
+        "exec": "~/.config/waybar/bin/spotify-img.sh",
+        // "path": "/tmp/cover",
+        "size": 37,
+        "interval": 1,
+        "on-click": "playerctl -p spotify play-pause",
+        "on-scroll-up": "playerctl -p spotify volume $(bc <<< \"$(playerctl -p spotify volume) + 0.05\")",
+        "on-scroll-down": "playerctl -p spotify volume $(bc <<< \"$(playerctl -p spotify volume) - 0.05\")",
+   }
+}

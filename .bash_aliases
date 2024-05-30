@@ -2,7 +2,6 @@
 alias c=" clear"
 alias q=" exit"
 alias :q=" exit"
-alias bat="batcat"
 alias k9="kill -9"
 alias pk9="pkill -9"
 alias icat="kitty +kitten icat"
@@ -14,22 +13,32 @@ alias trash="gio trash"
 alias ffind="find . -iname"
 alias ports=" netstat -tulpn | grep 'LISTEN'"
 alias uncommit="git reset --soft HEAD^"
-alias t=" x-terminal-emulator & disown"
 alias ç='l' # sometimes I press 'ç' instead of 'l'
+alias rm="sleep 2; rm"
 
 alias notes=" cat ~/.notes | sed ':a;N;\$!ba;s/\n\{2,\}/\n\n/g'"
 alias enotes=" $EDITOR ~/.notes"
 alias wnotes=" cat - | tee -a ~/.notes >/dev/null"
 wnote() { echo "$@" >>"$HOME/.notes"; }
 
-# APT-related aliases
-alias sai="sudo apt install"
-alias say="sudo apt install -y"
-alias sau="sudo apt update"
-alias acs=" apt-cache search"
-alias aci=" apt info"
-alias alg=" apt list --installed | grep -i"
-alias alu=" apt list --upgradable"
+# package manager aliases
+if which apt &>/dev/null; then
+    alias sai="sudo apt install"
+    alias say="sudo apt install -y"
+    alias sau="sudo apt update && alu"
+    alias acs=" apt-cache search"
+    alias aci=" apt info"
+    alias alg=" apt list --installed | grep -i"
+    alias alu=" apt list --upgradable"
+elif which pacman &>/dev/null; then
+    alias sai="sudo pacman -S"
+    alias say="sudo pacman -Syu"
+    #alias sau=
+    alias acs=" pacman -Ss"
+    alias aci=" pacman -Si"
+    alias alg=" pacman -Q | grep -i"
+    alias alu=" pacman -Sup --print-format '%n/%v'"
+fi
 
 # Misc
 alias proton="proton-call -r"
@@ -37,7 +46,7 @@ alias proton="proton-call -r"
 alias docker-compose="docker compose"
 alias https-server="http-server -S -C ~/.localhost.crt -K ~/.localhost.key -r --cors --no-dotfiles"
 alias ytmp3="notify-task yt-dlp -f ba -x --audio-format mp3"
-alias resplasma=" DISPLAY=:0 pkill -9 plasmashell && sleep 2 && plasmashell --replace & disown"
+alias code="code --enable-features=UseOzonePlatform --ozone-platform-hint=auto"
 
 # Aliases to my scripts
 # No, I won't add '.scripts' to $PATH
