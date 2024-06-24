@@ -46,7 +46,7 @@
             // "special:spotify": []
         },
         "format-icons": {
-            "urgent": "󰊠",
+            //"urgent": "󰊠",
             "active": "󰮯",
             "default": "󱁂",
             "empty": "",

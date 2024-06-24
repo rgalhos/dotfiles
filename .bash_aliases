@@ -15,6 +15,7 @@ alias ports=" netstat -tulpn | grep 'LISTEN'"
 alias uncommit="git reset --soft HEAD^"
 alias ç='l' # sometimes I press 'ç' instead of 'l'
 alias rm="sleep 2; rm"
+alias pcoff=" ddcutil setvcp D6 05; poweroff"
 
 alias notes=" cat ~/.notes | sed ':a;N;\$!ba;s/\n\{2,\}/\n\n/g'"
 alias enotes=" $EDITOR ~/.notes"
@@ -35,15 +36,12 @@ elif which pacman &>/dev/null; then
     alias say="sudo pacman -Syu"
     #alias sau=
     alias acs=" pacman -Ss"
-    alias aci=" pacman -Si"
+    aci() { pacman -Qi "$1" || pacman -Si "$1" }
     alias alg=" pacman -Q | grep -i"
     alias alu=" pacman -Sup --print-format '%n/%v'"
 fi
 
 # Misc
-alias proton="proton-call -r"
-#alias proton="STEAM_COMPAT_CLIENT_INSTALL_PATH=~/.steam/steam STEAM_COMPAT_DATA_PATH=~/.steam/steam/steamapps/common/Proton\ \-\ Experimental/files/share/wine ~/.steam/steam/steamapps/common/Proton\ 7.0/proton run "
-alias docker-compose="docker compose"
 alias https-server="http-server -S -C ~/.localhost.crt -K ~/.localhost.key -r --cors --no-dotfiles"
 alias ytmp3="notify-task yt-dlp -f ba -x --audio-format mp3"
 alias code="code --enable-features=UseOzonePlatform --ozone-platform-hint=auto"
@@ -214,5 +212,5 @@ glog() {
 }
 
 gdiff() {
-    git diff --name-only --relative --diff-filter=d | xargs batcat --diff
+    git diff --name-only --relative --diff-filter=d | xargs bat --diff
 }

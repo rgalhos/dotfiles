@@ -8,17 +8,17 @@ now_playing=$(playerctl -p spotify metadata --format "{{ artist }} - {{ title }}
 
 position=$(playerctl -p spotify position)
 duration=$(bc <<< "$(playerctl -p spotify metadata mpris:length)/1000000")
-maxsize=$(bc <<< "${#now_playing} * 8")
+maxsize=$(bc <<< "$(wc -L <<< "$now_playing") * 8")
 maxsize=$(( maxsize > 800 ? 800 : maxsize ))
 elapsed=$(bc <<< "$position * $maxsize / $duration")
 elapsed=$(( elapsed > 800 ? 800 : elapsed ))
 
 progress="<span font='1px' line-height='1px' background='#1db954'>$(printf ' %.0s' $(seq 1 "$elapsed"))</span><span background='#ffffff' font='1px'>$(printf ' %.0s' $(seq 1 "$(( maxsize - elapsed ))"))</span>"
-now_playing=$(playerctl -p spotify metadata --format "$now_playing\n$progress")
+now_playing="$(echo "$now_playing" | sed -e 's/&/&amp;/g' -e 's/</&lt;/g')"
+now_playing="$now_playing\n$progress"
 
 cover=$(playerctl -p spotify metadata mpris:artUrl)
-filename="${cover#*image/}"
-filepath="/tmp/$filename"
+filepath="/tmp/${cover#*image/}"
 
 if [ -n "$cover" ] && [ ! -e "$filepath" ]; then
     curl -s "$cover" --output "$filepath"
