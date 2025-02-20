@@ -18,8 +18,9 @@
 }
 
 window#waybar {
-    /* background: #1e1e2e; */
     background: transparent;
+    /* background: rgba(203, 166, 247, .05);
+    border-bottom: 0.5px solid rgba(203, 166, 247, .5); */
 }
 
 window#waybar.hidden {
@@ -94,7 +95,9 @@ tooltip label {
 #pulseaudio,
 #tray,
 #privacy,
-#custom-spotify
+#custom-notification,
+#custom-spotify,
+#battery
 {
     margin-right: 8px;
     padding-left: 8px;
@@ -105,8 +108,31 @@ tooltip label {
     text-shadow: 1px 1px 5px #000;
 }
 
+#window {
+    padding-top: 8px;
+}
+
 #custom-spotify {
     font-weight: bold;
+}
+
+#custom-notification {
+    opacity: .5;
+    font-weight: bolder;
+    letter-spacing: 0px;
+    padding: 0;
+    margin-top: 8px;
+}
+
+#custom-notification.none,
+#custom-notification.dnd-none,
+#custom-notification.dnd-notification {
+    opacity: 0;
+}
+
+#pulseaudio {
+    padding-left: 0px;
+    padding-right: 0px;
 }
 
 #network,
@@ -117,7 +143,9 @@ tooltip label {
 #tray,
 #privacy,
 #clock,
-#custom-spotify
+#custom-notification,
+#custom-spotify,
+#battery
 {
     transition: none;
     color: #ffffff;
@@ -135,7 +163,8 @@ tooltip label {
 }
 
 #memory,
-#workspaces {
+#workspaces,
+#battery.warning {
     border-bottom: 0.5px solid @peach;
 }
 
@@ -151,19 +180,16 @@ tooltip label {
     border-bottom: 0.5px solid @mauve;
 }
 
-#pulseaudio
-{
+#pulseaudio,
+#battery {
     border-bottom: 0.5px solid @green;
 }
 
 #privacy,
 #network.disconnected,
-#pulseaudio.source-muted
+#pulseaudio.source-muted,
+#pulseaudio.muted,
+#battery.critical
 {
-    border-bottom: 0.5px solid @red;
-}
-
-#pulseaudio.muted {
-    border-top: 1px solid @red;
-    /* border-left: 1px solid @red; */
+    border-top: 0.5px solid @red;
 }

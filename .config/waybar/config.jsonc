@@ -1,11 +1,10 @@
 {
-    "margin": "0 5 0 5",
+    "margin": "0 0 0 5",
     "modules-left": [
         "hyprland/workspaces",
         "hyprland/window"
     ],
     "modules-center": [
-        // "privacy",
         "image#album-art",
         "custom/spotify",
     ],
@@ -17,7 +16,8 @@
         "cpu",
         "memory",
         "tray",
-        "clock"
+        "clock",
+        "battery"
     ],
 
 
@@ -50,7 +50,6 @@
             "active": "󰮯",
             "default": "󱁂",
             "empty": "",
-            // "browser": "󰖟",
             "1whatsapp": "<span color='#25d366'></span>",
             "2discord": "<span color='#5865f2' font='Symbols Nerd Font Mono'></span>",
             "3spotify": "<span color='#1db954'></span>",
@@ -65,6 +64,9 @@
         "max-length": 50,
         "on-click": "hyprctl dispatch fullscreen 1",
         "on-click-middle": "hyprctl dispatch killactive",
+        "on-click-right": "~/.config/hypr/bin/close_special.sh",
+        "on-scroll-up": "hyprctl dispatch cyclenext",
+        "on-scroll-down": "hyprctl dispatch cyclenext prev",
         "rewrite": {
             "": "🦈"
         }
@@ -87,24 +89,24 @@
     },
 
     "privacy": {
-        "icon-spacing": 8,
-        "icon-size": 18,
+        "icon-spacing": 6,
+        "icon-size": 16,
         "transition-duration": 250,
         "modules": [
             {
                 "type": "screenshare",
                 "tooltip": true,
-                "tooltip-icon-size": 24
+                "tooltip-icon-size": 20
             },
             {
                 "type": "audio-out",
                 "tooltip": true,
-                "tooltip-icon-size": 24
+                "tooltip-icon-size": 20
             },
             {
                 "type": "audio-in",
                 "tooltip": true,
-                "tooltip-icon-size": 24
+                "tooltip-icon-size": 20
             }
         ]
     },
@@ -119,7 +121,7 @@
 
     "clock": {
         "interval": 1,
-        // "timezone": "America/New_York",
+        "timezone": "America/Maceio",
         "tooltip-format": "<tt><big>{calendar}</big></tt>",
         "format": "{:%d %b | %H:%M:%S}",
         "calendar": {
@@ -189,17 +191,17 @@
 
     "custom/notification": {
         "tooltip": false,
-        // "format": "{icon}",
-        "format": "    ",
+        "format": "{icon}<span foreground='#f38ba8' font='20px'><sup> {}</sup></span>",
+        // "format": "    ",
         "format-icons": {
-          "notification": "<span foreground='red'><sup></sup></span>",
+          "notification": "",
           "none": "",
-          "dnd-notification": "<span foreground='red'><sup></sup></span>",
-          "dnd-none": "",
-          "inhibited-notification": "<span foreground='red'><sup></sup></span>",
+          "dnd-notification": "<sup> </sup>",
+          "dnd-none": "<sup> </sup>",
+          "inhibited-notification": "",
           "inhibited-none": "",
-          "dnd-inhibited-notification": "<span foreground='red'><sup></sup></span>",
-          "dnd-inhibited-none": ""
+          "dnd-inhibited-notification": "<sup> </sup>",
+          "dnd-inhibited-none": "<sup> </sup>"
         },
         "return-type": "json",
         "exec-if": "which swaync-client && [ $(swaync-client --count) -gt 0 ]",
@@ -230,5 +232,19 @@
         "on-click": "playerctl -p spotify play-pause",
         "on-scroll-up": "playerctl -p spotify volume $(bc <<< \"$(playerctl -p spotify volume) + 0.05\")",
         "on-scroll-down": "playerctl -p spotify volume $(bc <<< \"$(playerctl -p spotify volume) - 0.05\")",
+   },
+
+   "battery": {
+        "bat": "BAT0",
+        "interval": 60,
+        "state": {
+            "warning": 30,
+            "critical": 15,
+        },
+        "format":"{capacity}% {icon}",
+        "format-icons": ["", "", "", "", ""],
+        "format-charging": "{capacity}% 󱐌",
+        "format-plugged": "{capacity}% ",
+        "max-length": 25
    }
 }

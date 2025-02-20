@@ -16,6 +16,7 @@ alias uncommit="git reset --soft HEAD^"
 alias ç='l' # sometimes I press 'ç' instead of 'l'
 alias rm="sleep 2; rm"
 alias pcoff=" ddcutil setvcp D6 05; poweroff"
+alias venv=' [ ! -d "./venv" ] && python3 -m venv ./venv; source ./venv/bin/activate'
 
 alias notes=" cat ~/.notes | sed ':a;N;\$!ba;s/\n\{2,\}/\n\n/g'"
 alias enotes=" $EDITOR ~/.notes"
@@ -77,8 +78,7 @@ alias hls=" command ls --color=tty --hyperlink=auto --group-directories-first"
 alias hla=" hls -lAh"
 
 tree() {
-    # exa --tree -a -I 'CVS|*.*.package|.svn|.git|.hg|.next|node_modules|bower_components' -L "${1:-3}" --group-directories-first --icons
-    command tree "${1:-.}" -aC -I 'CVS|*.*.package|.svn|.git|.hg|.next|node_modules|bower_components' -L "${2:-5}" --dirsfirst
+    command tree "${1:-.}" -aC -I 'CVS|*.*.package|.svn|.git|.hg|.next|node_modules|bower_components|venv' -L "${2:-5}" --dirsfirst
 }
 
 # Copy/paste on X and Wayland (or over ssh with kitty)
@@ -204,9 +204,9 @@ kdshare() {
 }
 
 glog() {
-    git log --color=always --format="%C(auto)%h%d %s %C(blue)%C(bold)%cr" |
+    git log --color=always --format="%C(auto)%h%d %s %C(blue)%C(bold)%cr" "${1:-HEAD}" |
         fzf --ansi --no-sort --reverse --tiebreak=index \
-            --preview "git show \$(echo {} | cut -d' ' -f1) | batcat -n --color=always" \
+            --preview "git show \$(echo {} | cut -d' ' -f1) | bat -n --color=always" \
             --bind "enter:execute(git show \$(echo {} | cut -d' ' -f1))" \
             --preview-window '~3'
 }
