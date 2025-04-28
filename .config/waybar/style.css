@@ -1,13 +1,13 @@
 @define-color bg-light #7c818c;
 @define-color bg-dark #383c4a;
 
-@define-color mauve #cba6f7;
-@define-color red #f38ba8;
-@define-color maroon #eba0ac;
-@define-color peach #fab387;
-@define-color yellow #f9e2af;
-@define-color green #a6e3a1;
-@define-color blue #89b4fa;
+@define-color mauve rgb(203, 166, 247);
+@define-color red rgb(243, 139, 168);
+@define-color maroon rgb(235, 160, 172);
+@define-color peach rgb(250, 179, 135);
+@define-color yellow rgb(249, 226, 175);
+@define-color green rgb(166, 227, 161);
+@define-color blue rgb(137, 180, 250);
 
 * {
     border: none;
@@ -28,18 +28,16 @@ window#waybar.hidden {
 }
 
 #workspaces {
+    border-radius: 10px;
     margin-right: 8px;
-    /* border-radius: 10px; */
     transition: none;
-    /* background: @bg-dark; */
-    border-bottom: 0.5px solid @peach;
 }
 
 #workspaces button {
+    padding: 4px 12px; /* icons fuck up the width */
     transition: none;
     background: transparent;
     color: @red;
-    padding: 5px 10px;
     font-size: 18px;
 }
 
@@ -95,61 +93,38 @@ tooltip label {
 #pulseaudio,
 #tray,
 #privacy,
+#workspaces,
+#battery,
 #custom-notification,
 #custom-spotify,
-#battery
+#custom-power-group,
+#custom-quit,
+#custom-lock,
+#custom-reboot,
+#custom-power
 {
-    margin-right: 8px;
-    padding-left: 8px;
-    padding-right: 8px;
-    padding-top: 4px;
+    margin: 2px 4px;
+    padding: 0 12px; /* icons fuck up the width */
     font-size: 14px;
-    /* border-radius: 10px; */
+    border-radius: 10px;
     text-shadow: 1px 1px 5px #000;
+    transition: none;
+    color: #ffffff;
 }
 
-#window {
-    padding-top: 8px;
+/* First and last */
+#workspaces { margin-left: 0; }
+#custom-power-group { margin-right: 0; }
+
+#workspaces,
+#custom-power-group {
+    padding: 0 6px 0 0;    /* icons fuck up the width */
 }
 
 #custom-spotify {
+    margin: 0 0 0 -20px;
+    padding: 2px 12px 8px 24px;
     font-weight: bold;
-}
-
-#custom-notification {
-    opacity: .5;
-    font-weight: bolder;
-    letter-spacing: 0px;
-    padding: 0;
-    margin-top: 8px;
-}
-
-#custom-notification.none,
-#custom-notification.dnd-none,
-#custom-notification.dnd-notification {
-    opacity: 0;
-}
-
-#pulseaudio {
-    padding-left: 0px;
-    padding-right: 0px;
-}
-
-#network,
-#cpu,
-#memory,
-#window,
-#pulseaudio,
-#tray,
-#privacy,
-#clock,
-#custom-notification,
-#custom-spotify,
-#battery
-{
-    transition: none;
-    color: #ffffff;
-    /* background: @bg-dark; */
 }
 
 #image.album-art {
@@ -157,39 +132,61 @@ tooltip label {
     padding: 0;
 }
 
-#cpu,
-#network {
-    border-bottom: 0.5px solid @blue;
+#privacy,
+#custom-notification {
+    opacity: .5;
+    margin-left: 0;
+    margin-right: 0;
+    padding-right: 0;
 }
 
+#custom-notification {
+    font-weight: bolder;
+    letter-spacing: -1px;
+}
+
+#cpu,
+#network,
 #memory,
 #workspaces,
-#battery.warning {
-    border-bottom: 0.5px solid @peach;
-}
-
-#clock {
-    border-bottom: 0.5px solid @maroon;
-}
-
-#window {
-    border-bottom: 0.5px solid @yellow;
-}
-
-#tray {
-    border-bottom: 0.5px solid @mauve;
-}
-
+#clock,
+#tray,
+#battery,
 #pulseaudio,
-#battery {
-    border-bottom: 0.5px solid @green;
-}
-
-#privacy,
 #network.disconnected,
 #pulseaudio.source-muted,
+#network.disconnected,
 #pulseaudio.muted,
-#battery.critical
+#custom-spotify
 {
-    border-top: 0.5px solid @red;
+    background-color: alpha(@mauve, .1);
+}
+
+#battery.warning {
+    background-color: alpha(@peach, .1);
+}
+
+#battery.critical {
+    background-color: alpha(@red, .1);
+}
+
+
+#custom-power-group,
+#custom-quit,
+#custom-lock,
+#custom-reboot,
+#custom-power {
+    background-color: rgba(23, 147, 209, .25);
+    min-width: 40px;
+    font-size: 16px;
+    color: #1793d1;
+}
+
+#custom-quit,
+#custom-lock,
+#custom-reboot,
+#custom-power {
+    background-color: alpha(@red, .15);
+    min-width: 24px;
+    color: @red;
 }

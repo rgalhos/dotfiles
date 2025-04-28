@@ -137,5 +137,5 @@ export BAT_THEME="Catppuccin-macchiato"
 [ -f "$HOME/.scripts/kittyface" ] && \
     . $HOME/.scripts/kittyface;
 
-export PATH=/var/lib/snapd/snap/bin:$PATH:$HOME/.spicetify:$HOME/.local/bin
+export PATH=/var/lib/snapd/snap/bin:$PATH:$HOME/.spicetify:$HOME/.local/bin:$HOME/.nix-profile/bin
 
