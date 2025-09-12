@@ -1,0 +1,166 @@
+configuration {
+  font: "Inter Regular 10";
+  icon-theme: "Oranchelo";
+  show-icons: true;
+  fullscreen: false;
+  threads: 1;
+}
+
+* {
+  bg-col: rgba(24, 24, 37, 40%);
+  bg-col-dark: rgba(24, 24, 37, 50%);
+  bg-col-light: rgba(24, 24, 37, 10%);
+  mauve: rgb(203, 166, 247);
+  mauve-subtle: rgba(203, 166, 247, 5%);
+  mauve-subtle-dark: rgba(203, 166, 247, 10%);
+  blue: #b4befe;
+  text-color: #cdd6f4;
+
+  transparent: #00000000;
+  foreground: #f2f2f2ee;
+  background-selected: #f2f2f245;
+  background-active: #f2f2f230;
+  background-white: #f2f2f211;
+  background-black: #00000000;
+  urgent: #e91e6366;
+  urgent-selected: #e91e6377;
+  border-col: #24273a;
+  selected-col: #24273a;
+  blue: #8aadf4;
+  fg-col: #cad3f5;
+  fg-col2: #ed8796;
+  grey: #6e738d;
+}
+
+window {
+  transparency: "real";
+  background-color: @bg-col;
+  text-color: @text-color;
+  width: 1000px;
+  orientation: vertical;
+  border: 3px;
+  border-color: #c6a0f6;
+}
+
+prompt {
+  enabled: false;
+}
+
+button {
+  action: "ok";
+  str: "🐱";
+  font: "Inter Regular 16";
+  expand: false;
+  text-color: @text-color;
+  background-color: @transparent;
+  vertical-align: 0.5;
+  horizontal-align: 0.5;
+}
+
+entry {
+  font: "Inter Regular 14";
+  background-color: @transparent;
+  text-color: @text-color;
+  expand: true;
+  vertical-align: 0.5;
+  horizontal-align: 0;
+  placeholder: "*  ‧̍̊˙· 𓆝.° ｡˚𓆛˚｡ °.𓆞 ·˙‧̍̊";
+  placeholder-color: @blue;
+  hide-cursor-on-empty: true;
+  blink: true;
+}
+
+entry-wrapper {
+  orientation: horizontal;
+  margin: 0 12px 0 12px;
+  spacing: 12px;
+  vertical-align: 0.5;
+  background-color: @transparent;
+  children: [ button, entry];
+}
+
+inputbar {
+  padding: 8px 0;
+  margin: 10px 10px 14px 10px;
+  background-color: @mauve-subtle-dark;
+  text-color: @text-color;
+  expand: false;
+  border-radius: 9px;
+  position: north;
+  children: [ entry-wrapper];
+}
+
+listview {
+  background-color: @transparent;
+  spacing: 0;
+  lines: 7;
+  columns: 2;
+  cycle: true;
+  dynamic: true;
+  scrollbar: false;
+}
+
+mainbox {
+  width: 200px;
+  expand: true;
+  spacing: 0px;
+  padding: 5px 5px 15px;
+  background-color: @background-black;
+  children: [ inputbar, listview];
+}
+
+element {
+  background-color: transparent;
+  text-color: @text-color;
+  orientation: horizontal;
+  border: 0;
+  border-color: @background-white;
+  border-radius: 6px;
+  spacing: 8px;
+  margin: 0px 12px 0px 12px;
+  padding: 10px 16px 10px 16px;
+}
+
+element-icon {
+  size: 20px;
+  border: 0;
+  border-color: @transparent;
+  background-color: transparent;
+}
+
+element-text {
+  font: "Inter Regular 12";
+  expand: true;
+  horizontal-align: 0;
+  vertical-align: 0.5;
+  color: @text-color;
+  background-color: transparent;
+}
+
+element normal.urgent,
+element alternate.urgent {
+  background-color: @urgent;
+  text-color: @text-color;
+  border-radius: 9px;
+}
+
+element normal.active,
+element alternate.active {
+  background-color: transparent;
+  text-color: @text-color;
+}
+
+element selected {
+  background-color: @mauve-subtle-dark;
+  text-color: @text-color;
+}
+
+element selected.urgent {
+  background-color: @urgent-selected;
+  text-color: @text-color;
+}
+
+element selected.active {
+  background-color: @mauve-subtle-dark;
+  color: @text-color;
+}

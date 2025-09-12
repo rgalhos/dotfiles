@@ -8,14 +8,11 @@ alias icat="kitty +kitten icat"
 alias fdiff="kitty +kitten diff"
 alias transfer="kitty +kitten transfer"
 [ "$TERM" = "xterm-kitty" ] && alias ssh="kitty +kitten ssh"
-alias priv="opera --private"
 alias trash="gio trash"
-alias ffind="find . -iname"
 alias ports=" netstat -tulpn | grep 'LISTEN'"
 alias uncommit="git reset --soft HEAD^"
 alias ç='l' # sometimes I press 'ç' instead of 'l'
 alias rm="sleep 2; rm"
-alias pcoff=" ddcutil setvcp D6 05; poweroff"
 alias venv=' [ ! -d "./venv" ] && python3 -m venv ./venv; source ./venv/bin/activate'
 
 alias notes=" cat ~/.notes | sed ':a;N;\$!ba;s/\n\{2,\}/\n\n/g'"
@@ -33,13 +30,8 @@ if which apt &>/dev/null; then
     alias alg=" apt list --installed | grep -i"
     alias alu=" apt list --upgradable"
 elif which pacman &>/dev/null; then
-    alias sai="sudo pacman -S"
-    alias say="sudo pacman -Syu"
-    #alias sau=
-    alias acs=" pacman -Ss"
     aci() { pacman -Qi "$1" || pacman -Si "$1" }
     alias alg=" pacman -Q | grep -i"
-    alias alu=" pacman -Sup --print-format '%n/%v'"
 fi
 
 # Misc
@@ -74,8 +66,6 @@ else
     alias lldir=" ls -lh -d */"
     alias ladir=" lldir -d .*/"
 fi
-alias hls=" command ls --color=tty --hyperlink=auto --group-directories-first"
-alias hla=" hls -lAh"
 
 tree() {
     command tree "${1:-.}" -aC -I 'CVS|*.*.package|.svn|.git|.hg|.next|node_modules|bower_components|venv' -L "${2:-5}" --dirsfirst
@@ -145,7 +135,6 @@ ex() {
 shf() {
     nautilus "$1" &>/dev/null
 }
-alias showf="shf"
 
 gt() {
     local base_dir=
@@ -168,17 +157,6 @@ notify-task() {
     local retval=$?
     notify "Task $([ $retval -eq 0 ] && echo 'finished' || echo 'failed')"
     return retval
-}
-
-pvi() {
-    local COLS LINES
-    COLS=$(($(tput cols) / 2))
-    LINES=$(tput lines)
-
-    find . -type f -exec file {} + |
-        grep -oP '^.+:\s*\w+\s*image' |
-        cut -d':' -f1 |
-        fzf --preview "kitty +kitten icat --place ${COLS}x${LINES}@${COLS}x0 --transfer-mode file {}" --preview-window '~3'
 }
 
 kdshare() {
@@ -209,8 +187,4 @@ glog() {
             --preview "git show \$(echo {} | cut -d' ' -f1) | bat -n --color=always" \
             --bind "enter:execute(git show \$(echo {} | cut -d' ' -f1))" \
             --preview-window '~3'
-}
-
-gdiff() {
-    git diff --name-only --relative --diff-filter=d | xargs bat --diff
 }
