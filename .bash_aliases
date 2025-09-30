@@ -188,3 +188,10 @@ glog() {
             --bind "enter:execute(git show \$(echo {} | cut -d' ' -f1))" \
             --preview-window '~3'
 }
+_glog_complete () {
+    if [ ! $(git rev-parse --git-dir 2>/dev/null) ]; then
+        return
+    fi
+
+    COMPREPLY=( $(compgen -W "$(git --no-pager branch -r --no-color)") )
+}

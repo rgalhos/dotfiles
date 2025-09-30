@@ -86,6 +86,8 @@ export EDITOR=vim
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
+export MAKEFLAGS="-j$(nproc)"
+#export CFLAGS="-march=native"
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
@@ -100,7 +102,7 @@ source $HOME/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
     source $HOME/.fzf-bindings.zsh
 
 export FZF_DEFAULT_OPTS="
-    --color=bg+:#363a4f,bg:#24273a,spinner:#f4dbd6,hl:#ed8796
+    --color=bg+:#313244,bg:-1,spinner:#f4dbd6,hl:#ed8796
     --color=fg:#cad3f5,header:#ed8796,info:#c6a0f6,pointer:#f4dbd6
     --color=marker:#f4dbd6,fg+:#cad3f5,prompt:#c6a0f6,hl+:#ed8796"
 
@@ -137,5 +139,4 @@ export BAT_THEME="Catppuccin-macchiato"
 [ -f "$HOME/.scripts/kittyface" ] && \
     . $HOME/.scripts/kittyface;
 
-export PATH=/var/lib/snapd/snap/bin:$PATH:$HOME/.spicetify:$HOME/.local/bin:$HOME/.nix-profile/bin
-
+export PATH=/var/lib/snapd/snap/bin:$PATH:$HOME/.spicetify:$HOME/.local/bin:$HOME/.pyenv/bin:$HOME/.nix-profile/bin

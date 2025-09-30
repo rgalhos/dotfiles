@@ -7,7 +7,7 @@ configuration {
 }
 
 * {
-  bg-col: rgba(24, 24, 37, 40%);
+  bg-col: rgba(17, 17, 27, 40%);
   bg-col-dark: rgba(24, 24, 37, 50%);
   bg-col-light: rgba(24, 24, 37, 10%);
   mauve: rgb(203, 166, 247);

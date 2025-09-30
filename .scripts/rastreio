@@ -1,7 +1,5 @@
 #!/bin/bash
 
-alias icat='kitty +kitten icat'
-
 UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/107.0.0.0 Safari/537.36 OPR/93.0.0.0"
 COD_RASTREIO=$1
 if [ -z "$COD_RASTREIO" ]; then
@@ -16,7 +14,7 @@ check_ret() {
   fi
 }
 
-curl -L -S -s -A "$UA" "https://rastreamento.correios.com.br/core/securimage/securimage_show.php" -c /tmp/c.txt | icat
+curl -L -S -s -A "$UA" "https://rastreamento.correios.com.br/core/securimage/securimage_show.php" -c /tmp/c.txt | kitty +kitten icat
 check_ret "Erro ao baixar o captcha"
 
 echo -n "CAPTCHA: "
