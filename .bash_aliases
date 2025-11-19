@@ -1,6 +1,7 @@
 # Shortcuts
 alias c=" clear"
 alias q=" exit"
+alias z=" zoxide"
 alias :q=" exit"
 alias k9="kill -9"
 alias pk9="pkill -9"
@@ -75,21 +76,7 @@ tree() {
 if [ "$TERM" = "xterm-kitty" ]; then
     alias xcopy="kitty +kitten clipboard"
     alias xpaste="kitty +kitten clipboard --get-clipboard"
-elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
-    alias xcopy="xclip -selection clipboard"
-    alias xpaste="xclip -selection clipboad -o"
-else
-    alias xcopy="wl-copy"
-    alias xpaste="wl-paste"
 fi
-
-alias ttycopy="tee $(tty) | xcopy"
-alias ttypaste="xpaste | tee $(tty)"
-
-# SSH public key
-alias sshpub=" cat ~/.ssh/id_rsa.pub"
-alias copysshpub=" sshpub | ttycopy"
-
 
 dlm3u8() {
     notify-task ffmpeg -i "$1" -bsf:a aac_adtstoasc -vcodec copy -c copy -crf 23 "${2:-file.mp4}"
@@ -181,6 +168,10 @@ kdshare() {
     done
 }
 
+co() {
+    "$@" | tee $(tty) | xcopy
+}
+
 glog() {
     git log --color=always --format="%C(auto)%h%d %s %C(blue)%C(bold)%cr" "${1:-HEAD}" |
         fzf --ansi --no-sort --reverse --tiebreak=index \
@@ -195,3 +186,4 @@ _glog_complete () {
 
     COMPREPLY=( $(compgen -W "$(git --no-pager branch -r --no-color)") )
 }
+complete -F _glog_complete glog

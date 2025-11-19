@@ -4,11 +4,14 @@ if [ "$(playerctl -p spotify status)" != "Playing" ]; then
     exit 0
 fi
 
-now_playing=$(playerctl -p spotify metadata --format "{{ artist }} - {{ title }}")
+now_playing=$("$HOME/.config/waybar/bin/spotify-lyrics.sh")
+if [ ! -n "${now_playing// /}" ]; then
+	now_playing=$(playerctl -p spotify metadata --format "{{ artist }} - {{ title }}")
+fi
 
 position=$(playerctl -p spotify position)
-duration=$(bc <<< "$(playerctl -p spotify metadata mpris:length)/1000000")
-maxsize=$(bc <<< "$(wc -L <<< "$now_playing") * 8")
+duration=$(( "$(playerctl -p spotify metadata mpris:length)" / 1000000 ))
+maxsize=$(( "$(wc -L <<< "$now_playing")" * 8 ))
 maxsize=$(( maxsize > 800 ? 800 : maxsize ))
 elapsed=$(bc <<< "$position * $maxsize / $duration")
 elapsed=$(( elapsed > 800 ? 800 : elapsed ))

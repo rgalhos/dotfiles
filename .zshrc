@@ -140,3 +140,27 @@ export BAT_THEME="Catppuccin-macchiato"
     . $HOME/.scripts/kittyface;
 
 export PATH=/var/lib/snapd/snap/bin:$PATH:$HOME/.spicetify:$HOME/.local/bin:$HOME/.pyenv/bin:$HOME/.nix-profile/bin
+
+eval "$(pyenv init - zsh)"
+export PYENV_ROOT="$HOME/.pyenv"
+eval "$(pyenv virtualenv-init -)"
+
+
+# Load Angular CLI autocompletion.
+source <(ng completion script)
+
+# pnpm
+export PNPM_HOME="$HOME/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# bun completions
+[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"
+

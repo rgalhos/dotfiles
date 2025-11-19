@@ -1,7 +1,7 @@
 #!/bin/bash
 
 if [ "$(playerctl -p spotify status)" != "Playing" ]; then
-    echo "invalid"
+    echo 'invalid'
     exit 0
 fi
 
