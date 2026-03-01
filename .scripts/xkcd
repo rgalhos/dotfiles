@@ -1,0 +1,22 @@
+#!/bin/bash
+
+RAND_COMIC_URL="https://c.xkcd.com/random/comic/"
+
+RESPONSE=$(curl -L -s "$RAND_COMIC_URL")
+
+META=$(echo "$RESPONSE" | grep '<meta')
+
+TITLE=$(echo "$META" | grep -E 'og:title"' | grep -oE 'content="[^"]+')
+TITLE=${TITLE#*\"}
+
+URL=$(echo "$META" | grep -E 'og:url"' | grep -oE 'content="[^"]+')
+URL=${URL#*\"}
+
+IMG_URL=$(echo "$META" | grep -E 'og:image"' | grep -oE 'content="[^"]+')
+IMG_URL=${IMG_URL#*\"}
+
+if [ -n "$IMG_URL" ]; then
+  kitty +kitten icat "$IMG_URL"
+  echo "$TITLE"
+fi
+
