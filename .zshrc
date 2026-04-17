@@ -114,13 +114,13 @@ export FZF_CTRL_T_OPTS="
 
 
 # ^S prepends "sudo " to the buffer
-sudo-command-line() {
+doas-command-line() {
     [[ -z $BUFFER ]] && zle up-history
-    [[ $BUFFER != sudo\ * ]] && BUFFER="sudo ${BUFFER% }"
+    [[ $BUFFER != sudo\ * ]] && BUFFER=" doas ${BUFFER% }"
     zle end-of-line
 }
-zle -N sudo-command-line
-bindkey "^S" sudo-command-line
+zle -N doas-command-line
+bindkey "^S" doas-command-line
 
 # less(1) options
 export LESS='-Rij.5'
@@ -145,10 +145,6 @@ eval "$(pyenv init - zsh)"
 export PYENV_ROOT="$HOME/.pyenv"
 eval "$(pyenv virtualenv-init -)"
 
-
-# Load Angular CLI autocompletion.
-source <(ng completion script)
-
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
 case ":$PATH:" in
@@ -156,9 +152,6 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
-
-# bun completions
-[ -s "$HOME/.bun/_bun" ] && source "$HOME/.bun/_bun"
 
 # bun
 export BUN_INSTALL="$HOME/.bun"
