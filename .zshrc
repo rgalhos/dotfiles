@@ -61,14 +61,14 @@ ZSH_THEME="mg"
 # HIST_STAMPS="dd/mm/yyyy"
 
 # Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
+ZSH_CUSTOM=/usr/share/zsh/
 
 # Which splugins would you like to load?
 # Standard plugins can be found in $ZSH/plugins/
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-# plugins=(zsh-syntax-highlighting)
+plugins=(zsh-syntax-highlighting)
 
 # You may need to manually set your language environment
 export LANG=en_US.UTF-8
@@ -94,8 +94,6 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
 source $HOME/.bash_aliases
-source $HOME/.oh-my-zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-
 
 # Load fzf binds
 [ -f "$HOME/.fzf-bindings.zsh" ] && which fzf &> /dev/null && \
@@ -113,14 +111,26 @@ export FZF_CTRL_T_OPTS="
     --height 90%"
 
 
-# ^S prepends "sudo " to the buffer
+# ^S prepends "doas " to the buffer
 doas-command-line() {
     [[ -z $BUFFER ]] && zle up-history
-    [[ $BUFFER != sudo\ * ]] && BUFFER=" doas ${BUFFER% }"
+    [[ $BUFFER != doas\ * ]] && BUFFER=" doas ${BUFFER% }"
     zle end-of-line
 }
 zle -N doas-command-line
 bindkey "^S" doas-command-line
+
+# ^F search file contents recursively
+search-contents-fzf() {
+    rg --line-number --with-filename . --color=always --field-match-separator $'\u00a0' | \
+        fzf --ansi --exact \
+        --delimiter $'\u00a0' \
+        --preview "bat --color=always {1} --highlight-line {2}" \
+        --preview-window '~8,+{2}-5' \
+        --bind 'enter:execute(bat --paging=always --color=always --highlight-line {2} {1})'
+}
+zle -N search-contents-fzf
+bindkey "^F" search-contents-fzf
 
 # less(1) options
 export LESS='-Rij.5'
@@ -133,13 +143,13 @@ export LESS_TERMCAP_ue=$'\e[0m'
 export LESS_TERMCAP_us=$'\e[04;38;5;146m'
 
 # batcat theme
-export BAT_THEME="Catppuccin-macchiato"
+export BAT_THEME="Catppuccin Mocha"
 
 # Dumb script that shows random colors and a cat face
 [ -f "$HOME/.scripts/kittyface" ] && \
     . $HOME/.scripts/kittyface;
 
-export PATH=/var/lib/snapd/snap/bin:$PATH:$HOME/.spicetify:$HOME/.local/bin:$HOME/.pyenv/bin:$HOME/.nix-profile/bin
+export PATH=$PATH:$HOME/.local/bin:$HOME/.pyenv/bin:$HOME/.nix-profile/bin
 
 eval "$(pyenv init - zsh)"
 export PYENV_ROOT="$HOME/.pyenv"
@@ -152,8 +162,4 @@ case ":$PATH:" in
   *) export PATH="$PNPM_HOME:$PATH" ;;
 esac
 # pnpm end
-
-# bun
-export BUN_INSTALL="$HOME/.bun"
-export PATH="$BUN_INSTALL/bin:$PATH"
 

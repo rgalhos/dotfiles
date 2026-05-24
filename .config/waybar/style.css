@@ -159,7 +159,7 @@ tooltip label {
 #pulseaudio.muted,
 #custom-spotify
 {
-    background-color: alpha(@mauve, .1);
+    background-color: alpha(#11111b, .5);
 }
 
 #battery.warning {

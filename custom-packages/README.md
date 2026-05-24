@@ -1,0 +1,1 @@
+`catppuccin-gtk-theme-mocha-darkened` is a modified version of the discontinued [`catppuccin/gtk`](https://github.com/catppuccin/gtk) package ([AUR](https://aur.archlinux.org/packages/catppuccin-gtk-theme-mocha)) that replaces the base and surface0 colors with crust, making all\* the backgrounds darker.

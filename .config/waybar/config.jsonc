@@ -192,8 +192,9 @@
   },
 
   "custom/spotify": {
-    "exec-if": "[ $(playerctl -p spotify status) = 'Playing' ]",
-    "exec": "~/.config/waybar/bin/spotify.sh",
+    "exec-if": "[ $(playerctl status) = 'Playing' ] || [ $(playerctl -p spotify status) = 'Playing' ]",
+    //"exec": "~/.config/waybar/bin/spotify.sh",
+    "exec": "~/.config/waybar/bin/media.sh",
     "return-type": "json",
     "format": "{}",
     "interval": 1,
@@ -204,7 +205,7 @@
   },
 
   "image#album-art": {
-    "exec": "[ $(playerctl -p spotify status) = 'Playing' ] && echo '/tmp/cover' || echo 'invalid'",
+    "exec": "[ $(playerctl status) = 'Playing' ] || [ $(playerctl -p spotify status) = 'Playing' ] && echo '/tmp/cover' || echo 'invalid'",
     "size": 37,
     "interval": 1,
     "on-click": "playerctl -p spotify play-pause",
