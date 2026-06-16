@@ -1,0 +1,40 @@
+#include <tunables/global>
+
+profile nodejs
+    /home/*/.nvm/versions/node/*/bin/{node,nodejs}
+    flags=(attach_disconnected,mediate_deleted) {
+
+  #include <abstractions/base>
+  #include <abstractions/nameservice>
+  #include <abstractions/ssl_certs>
+  #include <abstractions/user-tmp>
+
+  network,
+
+  /usr/lib/** mr,
+  /usr/bin/** ix,
+  /proc/** r,
+  /dev/pts/* rw,
+  /dev/ptmx rw,
+  /dev/tty rw,
+  /dev/random r,
+  /dev/urandom r,
+
+  # nvm
+  owner /home/*/.nvm/             r,
+  owner /home/*/.nvm/**           r,
+  owner /home/*/.nvm/**/bin/*     ix,
+
+  # npm
+  owner /home/*/.npm/             rw,
+  owner /home/*/.npm/**           rwlk,
+
+  # Projects
+  owner /home/*/Projects/   rwkmix,
+  owner /home/*/Projects/** rwkmix,
+
+  # Minimal traversal of /home
+  owner /home/                    r,
+  owner /home/*/                  r,
+}
+

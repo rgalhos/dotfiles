@@ -163,3 +163,34 @@ case ":$PATH:" in
 esac
 # pnpm end
 
+# node
+export NODE_REPL_HISTORY="/tmp/.node_repl_history"
+export NPM_FLAGS="--verbose --ignore-scripts"
+
+node() {
+  if [ -d "node_modules" ]; then
+    _NODE_TEMP="$(pwd)/node_modules/_tmp-$(cat /proc/sys/kernel/random/boot_id)"
+    NODE_TEMP=$_NODE_TEMP TMPDIR=$_NODE_TEMP command node "$@"
+  else
+    command node "$@"
+  fi
+}
+
+npm() {
+  if [[ "$1" =~ "^i|install|ci|clean-install$" ]]; then
+    _NODE_TEMP="$(pwd)/node_modules/_tmp-$(cat /proc/sys/kernel/random/boot_id)"
+    NODE_TEMP=$_NODE_TEMP TMPDIR=$_NODE_TEMP command npm "$@"
+  else
+    command npm "$@"
+  fi
+}
+
+npx() {
+  if [ -d "node_modules" ]; then
+    _NODE_TEMP="$(pwd)/node_modules/_tmp-$(cat /proc/sys/kernel/random/boot_id)"
+    NODE_TEMP=$_NODE_TEMP TMPDIR=$_NODE_TEMP command npx "$@"
+  else
+    command npx "$@"
+  fi
+}
+
