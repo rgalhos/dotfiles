@@ -1,24 +1,22 @@
-#include <tunables/global>
+abi <abi/4.0>,
+
+include <tunables/global>
 
 profile claude
     @{HOME}/.local/share/claude/versions/*
     flags=(attach_disconnected,mediate_deleted) {
 
-  #include <abstractions/base>
-  #include <abstractions/nameservice>
-  #include <abstractions/ssl_certs>
-  #include <abstractions/user-tmp>
+  include <abstractions/base-strict>
+  include <abstractions/consoles>
+  include <abstractions/nameservice-strict>
+  include <abstractions/ssl_certs>
+  include <abstractions/user-tmp>
 
   network,
 
   /usr/lib/** mr,
   /usr/bin/** ix,
   /proc/** r,
-  /dev/pts/* rw,
-  /dev/ptmx rw,
-  /dev/tty rw,
-  /dev/random r,
-  /dev/urandom r,
 
   # nvm
   owner @{HOME}/.nvm/             r,
@@ -27,7 +25,7 @@ profile claude
 
   # npm
   owner @{HOME}/.npm/             rw,
-  owner @{HOME}/.npm/**           rwlk,
+  owner @{HOME}/.npm/**           rw,
 
   # claude
   owner @{HOME}/.claude           rw,
@@ -38,9 +36,5 @@ profile claude
   # Projects
   owner @{HOME}/Projects/   rwkmix,
   owner @{HOME}/Projects/** rwkmix,
-
-  # Minimal traversal of /home
-  owner /home/                    r,
-  owner @{HOME}/                  r,
 }
 
