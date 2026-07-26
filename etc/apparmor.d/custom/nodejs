@@ -2,8 +2,11 @@ abi <abi/4.0>,
 
 include <tunables/global>
 
+@{exec_path}  = @{HOME}/.nvm/versions/node/*/bin/{node,nodejs}
+@{exec_path} +=@{bin}/{node,nodejs}
+
 profile nodejs
-    /home/*/.nvm/versions/node/*/bin/{node,nodejs}
+    @{exec_path}
     flags=(attach_disconnected,mediate_deleted) {
 
   include <abstractions/base-strict>
@@ -14,8 +17,7 @@ profile nodejs
 
   network,
 
-  /usr/lib/** mr,
-  /usr/bin/** ix,
+  @{bin}/** ix,
   /proc/** r,
   /dev/ptmx rw,
 
@@ -25,12 +27,10 @@ profile nodejs
   owner @{HOME}/.nvm/**/bin/*     ix,
 
   # npm
-  owner @{HOME}/.npmrc            rw, 
-  owner @{HOME}/.npm/             rw,
-  owner @{HOME}/.npm/**           rwlk,
+  owner @{HOME}/.npmrc            r,
+  owner @{HOME}/.npm/{,**}        rwlk,
 
   # Projects
-  owner @{HOME}/Projects/   rwkmix,
-  owner @{HOME}/Projects/** rwkmix,
+  owner @{HOME}/Projects/{,**}    rwkmix,
 }
 

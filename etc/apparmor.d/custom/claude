@@ -2,8 +2,10 @@ abi <abi/4.0>,
 
 include <tunables/global>
 
-profile claude
-    @{HOME}/.local/share/claude/versions/*
+@{exec_path}  = @{HOME}/.local/share/claude/versions/*
+@{exec_path} += @{HOME}/.vscode{,-oss}/extension/anthropic.claude-code-*/resources/native-binary/claude
+
+profile claude @{exec_path}
     flags=(attach_disconnected,mediate_deleted) {
 
   include <abstractions/base-strict>
@@ -19,22 +21,20 @@ profile claude
   /proc/** r,
 
   # nvm
-  owner @{HOME}/.nvm/             r,
-  owner @{HOME}/.nvm/**           r,
-  owner @{HOME}/.nvm/**/bin/*     ix,
+  owner @{HOME}/.nvm/{,**}        r,
+  owner @{HOME}/.nvm/**/bin/*     Px,
 
   # npm
-  owner @{HOME}/.npm/             rw,
-  owner @{HOME}/.npm/**           rw,
+  owner @{HOME}/.npm/{,**}        rw,
 
   # claude
   owner @{HOME}/.claude           rw,
   owner @{HOME}/.claude*          rw,
   owner @{HOME}/.claude/          rklw,
   owner @{HOME}/.claude/**        rklw,
+  owner @{user_cache_dirs}/claude rw,
 
   # Projects
-  owner @{HOME}/Projects/   rwkmix,
-  owner @{HOME}/Projects/** rwkmix,
+  owner @{HOME}/Projects/{,**}    rwkmPx,
 }
 
