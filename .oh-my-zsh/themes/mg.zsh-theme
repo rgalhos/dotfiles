@@ -18,8 +18,8 @@ ICON_BG_JOBS=$'\Uf1323' # nf-md-hammer_wrench
 ICON_BISECT=$'\ueaaf' # nf-cod-bug
 ICON_MERGE_HEAD=$'\uebab' # nf-cod-merge
 ICON_REBASE=$'\ue726'  # nf-dev-git_pull_request
-ICON_STAGED='✚'
-ICON_UNSTAGED='±'
+ICON_STAGED='S'
+ICON_UNSTAGED='U'
 ICON_DETACHED_HEAD=$'\u27a6'
 
 PREVBG=

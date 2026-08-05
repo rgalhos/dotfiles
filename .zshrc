@@ -111,14 +111,19 @@ export FZF_CTRL_T_OPTS="
     --height 90%"
 
 
-# ^S prepends "doas " to the buffer
-doas-command-line() {
+# ^S prepends doas or sudo to the buffer
+if command -v doas &> /dev/null; then
+    PRIVESC_CMD="doas"
+else
+    PRIVESC_CMD="sudo"
+fi
+privesc-command-line() {
     [[ -z $BUFFER ]] && zle up-history
-    [[ $BUFFER != doas\ * ]] && BUFFER=" doas ${BUFFER% }"
+    [[ $BUFFER != $PRIVESC_CMD\ * ]] && BUFFER=" $PRIVESC_CMD ${BUFFER% }"
     zle end-of-line
 }
-zle -N doas-command-line
-bindkey "^S" doas-command-line
+zle -N privesc-command-line
+bindkey "^S" privesc-command-line
 
 # ^F search file contents recursively
 search-contents-fzf() {
@@ -151,9 +156,11 @@ export BAT_THEME="Catppuccin Mocha"
 
 export PATH=$PATH:$HOME/.local/bin:$HOME/.pyenv/bin:$HOME/.nix-profile/bin
 
-eval "$(pyenv init - zsh)"
-export PYENV_ROOT="$HOME/.pyenv"
-eval "$(pyenv virtualenv-init -)"
+#if command -v pyenv &> /dev/null; then
+#    eval "$(pyenv init - zsh)"
+#    export PYENV_ROOT="$HOME/.pyenv"
+#    eval "$(pyenv virtualenv-init -)"
+#fi
 
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"

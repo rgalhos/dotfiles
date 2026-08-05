@@ -35,6 +35,9 @@ elif which pacman &>/dev/null; then
     alias alg=" pacman -Q | grep -i"
 fi
 
+if which batcat &>/dev/null; then
+    alias bat='batcat'
+fi
 # Misc
 alias https-server="http-server -S -C ~/.localhost.crt -K ~/.localhost.key -r --cors --no-dotfiles"
 alias ytmp3="notify-task yt-dlp -f ba -x --audio-format mp3"
