@@ -7,7 +7,7 @@ window#osd {
   margin-left: 3240px;
   border-radius: 10px;
   border: 1px solid #cba6f7;
-  background: alpha(#11111b, 0.9);
+  background: alpha(#11111b, 0.8);
 }
 
 window#osd #container {

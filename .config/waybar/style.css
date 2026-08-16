@@ -10,79 +10,79 @@
 @define-color blue rgb(137, 180, 250);
 
 * {
-    border: none;
-    border-radius: 0;
-    /* `otf-font-awesome` is required to be installed for icons */
-    font-family: 'Liberation Mono';
-    min-height: 20px;
+  border: none;
+  border-radius: 0;
+  font-family: "JetBrainsMono Nerd Font";
+  min-height: 30px;
 }
 
 window#waybar {
-    background: transparent;
-    /* background: rgba(203, 166, 247, .05);
-    border-bottom: 0.5px solid rgba(203, 166, 247, .5); */
+  background: transparent;
 }
 
 window#waybar.hidden {
-    opacity: 0.2;
+  opacity: 0.2;
 }
 
 #workspaces {
-    border-radius: 10px;
-    margin-right: 8px;
-    transition: none;
+  border-radius: 10px;
+  margin-right: 8px;
+  transition: none;
 }
 
 #workspaces button {
-    padding: 4px 12px; /* icons fuck up the width */
-    transition: none;
-    background: transparent;
-    color: @red;
-    font-size: 18px;
+  padding: 2px 6px; /* icons fuck up the width */
+  transition: none;
+  background: transparent;
+  color: @red;
+  font-weight: 900;
+  font-size: 16px;
 }
 
-#workspaces button:nth-child(3n+1):not(:first-child) {
-    margin-left: 16px;
+#workspaces button:nth-child(3n + 1):not(:first-child) {
+  margin-left: 8px;
 }
 
 #workspaces button.urgent {
-    color: @blue;
+  color: @blue;
 }
 
 #workspaces button.active {
-    color: @peach;
+  color: @peach;
 }
 
 #workspaces button.default {
-    color: @red;
+  color: @red;
 }
 
 #workspaces button.empty {
-    color: @bg-light;
+  color: @bg-light;
 }
-
-
 
 /* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
 #workspaces button:hover {
-    transition: none;
-    box-shadow: inherit;
-    text-shadow: inherit;
-    border-radius: 10px;
-    background: @bg-light;
+  transition: none;
+  box-shadow: inherit;
+  text-shadow: inherit;
+  border-radius: 10px;
+  background: @bg-dark;
 }
 
 #workspaces button.empty:hover {
-    color: @bg-dark;
-}
-
-#workspaces button.focused {
-    color: white;
+  color: @bg-dark;
 }
 
 tooltip label {
-    margin: 8px;
-    font-size: 14px;
+  margin: 8px;
+  font-size: 14px;
+}
+
+#network {
+  min-width: 180px;
+}
+
+#cpu {
+  min-width: 80px;
 }
 
 #network,
@@ -90,7 +90,7 @@ tooltip label {
 #clock,
 #memory,
 #window,
-#pulseaudio,
+#wireplumber,
 #tray,
 #privacy,
 #workspaces,
@@ -101,48 +101,51 @@ tooltip label {
 #custom-quit,
 #custom-lock,
 #custom-reboot,
-#custom-power
-{
-    margin: 2px 4px;
-    padding: 0 12px; /* icons fuck up the width */
-    font-size: 14px;
-    border-radius: 10px;
-    text-shadow: 1px 1px 5px #000;
-    transition: none;
-    color: #ffffff;
+#custom-power {
+  margin: 2px 4px;
+  padding: 0 12px; /* icons fuck up the width */
+  font-size: 14px;
+  border-radius: 10px;
+  text-shadow: 1px 1px 5px #000;
+  transition: none;
+  color: #ffffff;
 }
 
 /* First and last */
-#workspaces { margin-left: 0; }
-#custom-power-group { margin-right: 0; }
+#workspaces {
+  margin-left: 0;
+}
+#custom-power-group {
+  margin-right: 0;
+}
 
 #workspaces,
 #custom-power-group {
-    padding: 0 6px 0 0;    /* icons fuck up the width */
+  padding: 0 6px 0 0; /* icons fuck up the width */
 }
 
 #custom-spotify {
-    margin: 0 0 0 -20px;
-    padding: 2px 12px 8px 24px;
-    font-weight: bold;
+  margin: 0 0 0 -20px;
+  padding: 2px 12px 8px 24px;
+  font-weight: bold;
 }
 
 #image.album-art {
-    margin: 0 8px 0 0;
-    padding: 0;
+  margin: 0 8px 0 0;
+  padding: 0;
 }
 
 #privacy,
 #custom-notification {
-    opacity: .5;
-    margin-left: 0;
-    margin-right: 0;
-    padding-right: 0;
+  opacity: 0.5;
+  margin-left: 0;
+  margin-right: 0;
+  padding-right: 0;
 }
 
 #custom-notification {
-    font-weight: bolder;
-    letter-spacing: -1px;
+  font-weight: bolder;
+  letter-spacing: -1px;
 }
 
 #cpu,
@@ -152,41 +155,39 @@ tooltip label {
 #clock,
 #tray,
 #battery,
-#pulseaudio,
+#wireplumber,
 #network.disconnected,
-#pulseaudio.source-muted,
+#wireplumber.source-muted,
 #network.disconnected,
-#pulseaudio.muted,
-#custom-spotify
-{
-    background-color: alpha(#11111b, .5);
+#wireplumber.muted,
+#custom-spotify {
+  background-color: alpha(#11111b, 0.5);
 }
 
 #battery.warning {
-    background-color: alpha(@peach, .1);
+  background-color: alpha(@peach, 0.1);
 }
 
 #battery.critical {
-    background-color: alpha(@red, .1);
+  background-color: alpha(@red, 0.1);
 }
-
 
 #custom-power-group,
 #custom-quit,
 #custom-lock,
 #custom-reboot,
 #custom-power {
-    background-color: rgba(23, 147, 209, .25);
-    min-width: 40px;
-    font-size: 16px;
-    color: #1793d1;
+  background-color: alpha(@mauve, 0.25);
+  min-width: 40px;
+  font-size: 16px;
+  color: @mauve;
 }
 
 #custom-quit,
 #custom-lock,
 #custom-reboot,
 #custom-power {
-    background-color: alpha(@red, .15);
-    min-width: 24px;
-    color: @red;
+  background-color: alpha(@red, 0.15);
+  min-width: 24px;
+  color: @red;
 }

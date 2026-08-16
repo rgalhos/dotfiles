@@ -1,7 +1,23 @@
 ---------------------------------------------------------------
 --begin Window Rules
 
-hl.layer_rule({ match = { namespace = "^rofi$" }, blur = true, xray = true, no_screen_share = true })
+hl.layer_rule({
+    match = { namespace = "^rofi$" },
+    blur = true,
+    xray = true,
+    no_screen_share = true
+})
+
+hl.layer_rule({
+    match = { namespace = "^(swaync-control-center|swaync-notification-window)$" },
+    no_screen_share = true
+})
+
+hl.layer_rule({
+    match = { namespace = "^(waybar|swayosd|swaync-control-center|swaync-notification-window)$" },
+    blur = true,
+    ignore_alpha = 0,
+})
 
 hl.window_rule({ match = { class = "^.*$", xwayland = false }, center = true })
 hl.window_rule({ match = { class = "^.*$" }, persistent_size = true })
