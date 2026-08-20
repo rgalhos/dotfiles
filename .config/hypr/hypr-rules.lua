@@ -4,7 +4,7 @@
 hl.layer_rule({
     match = { namespace = "^rofi$" },
     blur = true,
-    xray = true,
+    --xray = true,
     no_screen_share = true
 })
 

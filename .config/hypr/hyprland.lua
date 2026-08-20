@@ -1,3 +1,6 @@
+require("config-desktop")
+--require("config-laptop")
+
 -- https://wiki.hypr.land/Configuring/Basics/Monitors/
 hl.monitor({
   output = "desc:GIGA-BYTE TECHNOLOGY CO. LTD. M34WQ 0x00000020",
@@ -34,9 +37,6 @@ hl.monitor({
   position = "auto",
   scale = "auto",
 })
-
-require("config-desktop")
---require("config-laptop")
 
 ---------------------------------------------------------------
 --begin Consts
