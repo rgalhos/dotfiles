@@ -1,0 +1,27 @@
+# Maintainer: rgalhos <github.com/rgalhos>
+pkgname=pjsk-animated-cursor-mizuki
+pkgver=0.0.1
+pkgrel=1
+pkgdesc="Animated Project Sekai cursor (Mizuki)"
+arch=('any')
+url="https://colorfulstage.com/media/download/"
+license=('GPL')
+makedepends=(win2xcur)
+source=("$pkgname-$pkgver.zip::https://colorfulstage.com/upload_images/media/Download/Mizuki%20Animated%20Cursor.zip")
+noextract=()
+sha256sums=("060f9c728eb2ca9fc5eff5aeccbd2b5e13be02e772640a98d74827e5dcbf8e4c")
+
+package() {
+	local base="$pkgdir/usr/share/icons/$pkgname"
+
+	install -dm755 "$base/windows" "$base/cursors"
+
+	cp "$srcdir"/*.{ani,inf} "$base/windows"
+
+	win2xcur "$base/windows"/*.ani -o "$base/cursors"
+	win2xcurtheme "$base/windows/install.inf" -o "$base/cursors"
+
+	echo "[Icon Theme]
+Name = Akiyama Mizuki Animated Cursor
+Inherits = Adwaita" | tee "$base/index.theme" "$base/cursor.theme"
+}

@@ -14,6 +14,7 @@ alias ports=" netstat -tulpn | grep 'LISTEN'"
 alias uncommit="git reset --soft HEAD^"
 alias ç='l' # sometimes I press 'ç' instead of 'l'
 alias rm="sleep 2; rm"
+alias pcoff=" ddcutil setvcp D6 05; poweroff"
 alias venv=' [ ! -d "./venv" ] && python3 -m venv ./venv; source ./venv/bin/activate'
 
 alias notes=" cat ~/.notes | sed ':a;N;\$!ba;s/\n\{2,\}/\n\n/g'"
@@ -35,9 +36,6 @@ elif which pacman &>/dev/null; then
     alias alg=" pacman -Q | grep -i"
 fi
 
-if which batcat &>/dev/null; then
-    alias bat='batcat'
-fi
 # Misc
 alias https-server="http-server -S -C ~/.localhost.crt -K ~/.localhost.key -r --cors --no-dotfiles"
 alias ytmp3="notify-task yt-dlp -f ba -x --audio-format mp3"
@@ -55,9 +53,9 @@ alias garfield=" ~/.scripts/garfield"
 # Directory contents
 if which exa &>/dev/null; then
     alias ls=" exa --group-directories-first"
-    alias l=" ls -lah --icons"
+    alias l=" ls -lah --icons auto"
     alias la=" ls -lah"
-    alias ll=" ls -lh --icons"
+    alias ll=" ls -lh --icons auto"
     alias lsd=" exa -D"
     alias lldir=" exa -lhD"
     alias ladir=" exa -lhD --all"
@@ -123,7 +121,11 @@ ex() {
 }
 
 shf() {
-    nautilus "$1" &>/dev/null
+    nautilus "$1" &>/dev/null 2>/dev/null
+}
+
+bak() {
+    cp "$1" "$1.bak"
 }
 
 gt() {
@@ -162,13 +164,22 @@ kdshare() {
     [ -z "${files[*]}" ] && return 1
 
     kdeconnect-cli --refresh
-    devices=$(kdeconnect-cli --list-available --id-name-only)
+    devices=()
+    while IFS= read -r line; do
+        devices+=("$line")
+    done < <(kdeconnect-cli --list-available --id-name-only)
 
     select device in "${devices[@]}"; do
         device_id="$(echo "$device" | cut -d' ' -f1)"
         notify-task kdeconnect-cli --share "${files[@]}" -d "$device_id"
         break
     done
+}
+
+ffcut() {
+    local input=$1 start=$2 end=$3 output=$4
+    [ -z "$output" ] && output="${input%.*}_cut.${input##*.}"
+    ffmpeg -ss "$start" -to "$end" -i "$input" -c copy "$output"
 }
 
 co() {
