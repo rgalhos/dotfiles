@@ -16,8 +16,15 @@ if hl.plugin.dynamic_cursors then
                 enabled = true,
                 mode = "tilt",
                 shake = {
-                    enabled = false,
-                }
+                    enabled = true,
+                    threshold = 6.0,
+                    limit = 3.0,
+                    timeout = 500,
+                    effects = true,
+                },
+                tilt = {
+                    activation = "negative_quadratic",
+                },
             }
         }
     })
@@ -28,7 +35,7 @@ if hl.plugin.hyprglass then
 
     hg.config({
         layers = { enabled = 1 },
-        tint_color = 0x11111bff,
+        tint_color = 0x11111b22,
         default_preset = "glass",
     })
 

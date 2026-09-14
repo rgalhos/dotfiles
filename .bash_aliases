@@ -51,22 +51,22 @@ alias rastreio=" ~/.scripts/rastreio"
 alias garfield=" ~/.scripts/garfield"
 
 # Directory contents
-if which exa &>/dev/null; then
-    alias ls=" exa --group-directories-first"
-    alias l=" ls -lah --icons auto"
-    alias la=" ls -lah"
-    alias ll=" ls -lh --icons auto"
-    alias lsd=" exa -D"
-    alias lldir=" exa -lhD"
-    alias ladir=" exa -lhD --all"
+if which eza &>/dev/null; then
+    alias ls=" eza --group-directories-first --hyperlink=auto"
+    alias l=" eza -lah --icons auto --hyperlink=auto"
+    alias la=" eza -lah --hyperlink=auto"
+    alias ll=" eza -lh --icons auto --hyperlink=auto"
+    alias lsd=" eza -D --hyperlink=auto"
+    alias lldir=" eza -lhD --hyperlink=auto"
+    alias ladir=" eza -lhD --all --hyperlink=auto"
 else
-    alias ls=" command ls --group-directories-first --color=tty"
-    alias l=" ls -lah"
-    alias la=" ls -lah"
-    alias ll=" ls -lh"
-    alias lsd=" ls -d */"
-    alias lldir=" ls -lh -d */"
-    alias ladir=" lldir -d .*/"
+    alias ls=" command ls --group-directories-first --color=tty --hyperlink=auto"
+    alias l=" ls -lah --hyperlink=auto"
+    alias la=" ls -lah --hyperlink=auto"
+    alias ll=" ls -lh --hyperlink=auto"
+    alias lsd=" ls -d */ --hyperlink=auto"
+    alias lldir=" ls -lh -d */ --hyperlink=auto"
+    alias ladir=" lldir -d .*/ --hyperlink=auto"
 fi
 
 tree() {
