@@ -1,0 +1,5 @@
+#!/bin/bash
+
+if which notify-send &>/dev/null; then
+    notify-send "New SSH connection for ${USER}@$(hostname)" "${SSH_CLIENT}\n$(date "+%d/%m/%Y %Hh%M")" || :
+fi
