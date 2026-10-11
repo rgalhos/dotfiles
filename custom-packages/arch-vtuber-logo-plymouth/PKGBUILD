@@ -1,0 +1,18 @@
+# Maintainer: rgalhos <github.com/rgalhos>
+pkgname=arch-vtuber-logo-plymouth
+pkgver=0.0.1
+pkgrel=1
+pkgdesc="Arch Linux branded Plymouth theme with a VTuber logo"
+arch=('any')
+url="https://github.com/rgalhos"
+license=('GPL')
+depends=(plymouth)
+_theme=arch-linux-branded
+
+package() {
+	local base="$pkgdir/usr/share/plymouth/themes/$_theme"
+
+	install -dm755 "$base"
+	install -m644 "$startdir/assets/$_theme".{plymouth,script} "$base"
+	install -m644 "$startdir/assets"/*.png "$base"
+}

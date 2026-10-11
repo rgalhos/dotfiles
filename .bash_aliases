@@ -43,15 +43,11 @@ alias code="code --enable-features=UseOzonePlatform --ozone-platform-hint=auto"
 
 # Aliases to my scripts
 # No, I won't add '.scripts' to $PATH
-alias catj="~/.scripts/catj"
-alias prettyj="catj"
-alias yexp="~/.scripts/yexp"
-alias getj="~/.scripts/getj"
 alias rastreio=" ~/.scripts/rastreio"
 alias garfield=" ~/.scripts/garfield"
 
 # Directory contents
-if which eza &>/dev/null; then
+if which eza &>/dev/null && [ -z "$SSH_CLIENT" ]; then
     alias ls=" eza --group-directories-first --hyperlink=auto"
     alias l=" eza -lah --icons auto --hyperlink=auto"
     alias la=" eza -lah --hyperlink=auto"

@@ -110,7 +110,6 @@ export FZF_CTRL_T_OPTS="
     --preview-window '~3'
     --height 90%"
 
-
 # ^S prepends doas or sudo to the buffer
 if command -v doas &> /dev/null; then
     PRIVESC_CMD="doas"
@@ -155,12 +154,6 @@ export BAT_THEME="Catppuccin Mocha"
     . $HOME/.scripts/kittyface;
 
 export PATH=$PATH:$HOME/.local/bin:$HOME/.pyenv/bin:$HOME/.nix-profile/bin
-
-#if command -v pyenv &> /dev/null; then
-#    eval "$(pyenv init - zsh)"
-#    export PYENV_ROOT="$HOME/.pyenv"
-#    eval "$(pyenv virtualenv-init -)"
-#fi
 
 # pnpm
 export PNPM_HOME="$HOME/.local/share/pnpm"
