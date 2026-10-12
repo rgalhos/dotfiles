@@ -83,6 +83,9 @@ export STEAMAPPS_SSD="$HOME/.steam/steam/steamapps/"
 export STEAMAPPS_HDD="/nvme1n1/SteamLibrary/steamapps/"
 
 export EDITOR=vim
+export TERMINAL=kitty
+[ -n "$DISPLAY" ] && export VISUAL=vim
+[ -n "$DISPLAY" ] && export BROWSER=zen-browser
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"

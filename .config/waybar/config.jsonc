@@ -2,17 +2,9 @@
   "margin": "2 0",
   "modules-left": ["hyprland/workspaces", "hyprland/window"],
   "modules-center": ["image#album-art", "custom/spotify"],
-  "modules-right": [
-    "privacy",
-    "custom/notification",
-    "network",
-    "wireplumber",
-    "cpu",
-    "memory",
-    "tray",
-    "clock",
-    "battery",
-    "group/group-power",
+  "include": [
+    "~/.config/waybar/config-desktop.jsonc"
+    // "~/.config/waybar/config-laptop.jsonc",
   ],
   "hyprland/workspaces": {
     "disable-scroll": true,

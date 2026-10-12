@@ -59,7 +59,13 @@ hl.window_rule({
 })
 
 hl.window_rule({
-    match = { class = "^blueman-manager$" },
+    match = { class = "^org\\.kde\\.kdeconnect\\.app$" },
+    float = true,
+    size = { 900, 800 },
+})
+
+hl.window_rule({
+    match = { class = "^blueman.*$" },
     float = true,
     size = { 530, 550 },
 })
@@ -75,21 +81,27 @@ hl.window_rule({
 })
 
 hl.window_rule({
+    match = { title = "^(.*[Gg]oogle [Aa]cc.*|.*[Cc]ontas? [Dd]o [Gg]oogle.*)$" },
+    border_color = "rgb(f38ba8) rgb(f38ba8)",
+    no_screen_share = true,
+})
+
+hl.window_rule({
     match = { class = "^virt-manager$" },
     float = true,
-    size = { 1000, 700 },
+    size = { rcAppW, rcAppH },
 })
 
 hl.window_rule({
     match = { class = "^org\\.nomacs\\.ImageLounge$" },
     float = true,
-    size = { 1000, 1000 },
+    size = { sqAppW, sqAppW },
 })
 
 hl.window_rule({
     match = { class = "^[Xx]dg-desktop-portal-gtk$" },
     float = true,
-    size = { 950, 750 },
+    size = { rcAppW, rcAppH },
     no_shadow = true,
     no_blur = true,
     border_size = 0,

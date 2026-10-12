@@ -8,8 +8,9 @@ hl.monitor({
   position = "0x0",
   scale = 1,
   bitdepth = 10,
-  vrr = 2
+  vrr = 2,
 })
+
 hl.monitor({
   output = "desc:Dell Inc. DELL P2422HE FVW89M3",
   mode = "preferred",
@@ -43,11 +44,18 @@ hl.monitor({
 
 MOD           = "SUPER"
 terminal      = "kitty"
-fileManager   = "nautilus"
+fileManager   = "nautilus --new-window"
 menu          = "rofi -combi-modi 'drun,window' -show combi -emoji-mode copy -no-show-match -no-sort -no-persist-history"
 gameWorkspace = 9
+
 appW          = "monitor_h*1.389" -- ((monitor_h*0.9)*4.63/3)
 appH          = "monitor_h*0.9"
+
+sqAppW        = "monitor_h*0.8"
+sqAppH        = "monitor_h*0.8"
+
+rcAppW        = "monitor_h*0.8"
+rcAppH        = "monitor_h*0.6"
 
 require("hypr-binds")
 require("hypr-rules")
@@ -72,10 +80,12 @@ hl.on("hyprland.start", function()
   hl.exec_cmd("nm-applet")
   hl.exec_cmd("blueman-applet")
   hl.exec_cmd("swayosd-server")
+  hl.exec_cmd("kdeconnect-indicator")
   hl.exec_cmd("hyprpm reload dynamic-cursors")
   hl.exec_cmd("kdeconnect-cli --refresh")
   hl.exec_cmd("wl-paste --type text --watch cliphist store")
   hl.exec_cmd("wl-paste --type image --watch cliphist store")
+  hl.exec_cmd("wayscriber --no-tray --no-resume-session --daemon")
 end)
 
 ---------------------------------------------------------------

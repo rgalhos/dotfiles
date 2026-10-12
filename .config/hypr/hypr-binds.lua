@@ -230,6 +230,9 @@ hl.bind("SHIFT + Print",
 
 hl.bind(MOD .. " + Print", exec([[grim - | tee "/tmp/print_$(date +%s).png" | wl-copy]]))
 
+-- Misc
+hl.bind(MOD .. " + CTRL + D", exec("wayscriber --daemon-toggle"))
+
 -- Global binds
 hl.bind("XF86Calculator", hl.dsp.send_shortcut({ mods = "CTRL + SHIFT", key = "M", window = "class:^vesktop$" }))
 hl.bind("SHIFT + ALT + S",

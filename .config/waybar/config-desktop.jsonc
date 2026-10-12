@@ -1,0 +1,14 @@
+{
+  "modules-right": [
+    "privacy",
+    "custom/notification",
+    "network",
+    "wireplumber",
+    "cpu",
+    "memory",
+    "tray",
+    "clock",
+    "battery",
+    "group/group-power",
+  ],
+}
