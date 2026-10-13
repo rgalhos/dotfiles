@@ -12,14 +12,7 @@ hl.monitor({
 })
 
 hl.monitor({
-  output = "desc:Dell Inc. DELL P2422HE FVW89M3",
-  mode = "preferred",
-  position = "-1920x-125",
-  scale = 1,
-})
-
-hl.monitor({
-  output = "desc:Dell Inc. DELL P2422HE 7SSFV34",
+  output = "desc:Dell Inc. DELL P2425HE FVSFV34",
   mode = "preferred",
   position = "-1920x-125",
   scale = 1,
@@ -205,6 +198,12 @@ hl.device({
 hl.device({
   -- usb at 3600 dpi
   name = "cooler-master-mm712-hybrid-mouse-1",
+  sensitivity = -1.0,
+})
+
+hl.device({
+  -- usb at 4000 dpi
+  name = "ugreen-receiver--mouse",
   sensitivity = -1.0,
 })
 
